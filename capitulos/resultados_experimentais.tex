@@ -1,0 +1,15 @@
+\chapter{Resultados Experimentais Preliminares}
+\label{cap:resultados}
+
+% Este capítulo apresenta os resultados experimentais obtidos por este trabalho. Inicialmente, ele descreve a infraestrutura experimental utilizada. Em seguida, analisa as três estratégias de legalização, no contexto de uma técnica de otimização incremental. Por fim, apresenta os resultados experimentais da avaliação da técnica proposta para legalização incremental.
+
+\section{Infraestrutura experimental}
+\label{sec:infraestrutura_experimental}
+
+% Os experimentos realizados utilizaram o conjunto de benchmarks disponibilizados pela competição \textit{ICCAD 2015 CAD Contest (problem C: Incremental Timing-Driven Placement)} \cite{kim2015}, o qual inclui 8 circuitos que possuem entre 768k e 1,93M células, todos derivados de circuitos industriais. Para cada circuito, a infraestrutura da competição fornece um posicionamento inicial, o qual já está legalizado. Optou-se por utilizar tal infraestrutura pois a mesma disponibiliza circuitos com número de células compatível com circuitos contemporâneos. Além disso, tal infraestrutura é de acesso aberto, o que facilita a comparação experimental deste trabalho com futuros trabalhos que possivelmente serão realizados por terceiros.
+
+% Todos os algoritmos apresentados neste capítulo foram implementados em C++. Para o desenvolvimento do protótipo com a técnica proposta, utilizou-se a implementação de R-tree disponível na biblioteca Boost \cite{boost}. Para fazer uso da R-tree é necessário definir dois de seus parâmetros: o grau da árvore e o algoritmo utilizado para a divisão de nodos durante a operação de inserção. Após alguns experimentos iniciais, não foi observada uma diferença significativa no tempo de execução das operações da R-tree ao variar o seu grau. Devido a isso, optou-se por utilizar uma árvore com grau 16. Por outro lado, o algoritmo de divisão de nodos utilizado tem impacto direto no tempo de execução da operação de inserção, assim como no tempo de execução das operações de busca subsequentes. Portanto, optou-se por utilizar o algoritmo denominado R*, que resulta em buscas espaciais mais rápidas, ao custo de um tempo de inserção um pouco maior.
+
+% Todos os experimentos foram realizados em um computador Linux com quatro CPUs Intel\textsuperscript{\textregistered} Core\textsuperscript{\textregistered} i5-4460 @ 3,20 GHz e 32GB RAM. Os experimentos que avaliam o tempo de execução podem apresentar resultados diferentes em cada realização, devido a variações causadas pelo computador utilizado. Portanto, para aumentar a confiança estatística obtida pelos experimentos, os mesmos foram repetidos 10 vezes, o que resultou em 99\% de confiança estatística\footnote{A confiança estatística foi medida utilizando o teste t de Student para p=0,01.}. Como a confiança estatística obtida foi suficientemente alta, os experimentos não foram repetidos mais vezes.
+
+\section{Comparação das estratégias de ...}
