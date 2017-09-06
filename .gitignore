@@ -1,1 +1,15 @@
 capitulos/old/
+.latex.json
+.latex/
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lot
+*.lsb
+*.pdf
+*.synctex.gz
+*.toc
