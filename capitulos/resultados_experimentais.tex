@@ -41,7 +41,7 @@ As Subseções \ref{sec:problema_a} a \ref{sec:problema_c} a seguir apresentam o
 Todos os resultados apresentados nestas seções são a média de 30 execuções. 
 Por fim, a Subseção \ref{sec:sintese_resultado} apresenta uma síntese de todos os resultados.
 
-\section{Problema A: Verificação dos Limites do Chip}
+\section{Estudo de Caso A:}
 \label{sec:problema_a}
 
 A Figura \ref{fig:missProblemA} apresenta o número de cache misses (eixo Y) em milhões para cada circuito avaliado (eixo X). As barras vermelhas representam o modelo de dados Orientado a Objetos (\ac{ood}). As barras azuis representam o modelo Orientado a Dados (\ac{dod}). O número total de cache misses para o \ac{dod} (de $0.5M$ a $1.4M$) foi, em média, um décimo do número atingido pelo modelo \ac{ood} (de $5.4M$ a $13.7M$). A redução no número de cache misses é proveniente diretamente da melhor organização dos dados em memória. Nesta organização, os dados de uma mesma propriedade (posição de uma determinada célula neste problema) estão armazenados contiguamente em memória. Portanto, ao ocorrer um miss na cache, somente dados úteis são recuperados da memória principal. Assim, é realizado um melhor aproveitamento dos blocos de dados recuperados da memória principal para a cache. 
@@ -62,11 +62,11 @@ A exploração da localidade de dados reduz o tempo de acesso à memória princi
     \label{fig:runtimeProblemA}
 \end{figure}
 
-\section{Problema B: Estimativa de Interconexão}
+\section{Estudo de Caso B:}
 \label{sec:problema_b}
 
 Com objetivo de avaliar o impacto da organização dos dados no pior cenário para o \ac{dod}. Nesta etapa do trabalho foi avaliado uma tarefa que necessite de diversas propriedades para solucionar o problema. 
-Diferente do Problema~A, nesta tarefa é necessário acessar diferentes \textit{entity-component systems} (interconexões e pinos) e múltiplas propriedades. Complementarmente, os pinos pertencentes a cada interconexão podem não estar contíguos em memória, o que impacta na performance. 
+Diferente do Estudo de Caso~A, nesta tarefa é necessário acessar diferentes \textit{entity-component systems} (interconexões e pinos) e múltiplas propriedades. Complementarmente, os pinos pertencentes a cada interconexão podem não estar contíguos em memória, o que impacta na performance. 
 
 A Figura~\ref{fig:runtimeProblemB} apresenta o número de cache misses resultantes para cada modelo de programação. Pode-se observar que o número de cache misses do \ac{dod} (de $253M$ a $819M$) foi, em média, $10\%$ maior do que quando comparado ao modelo \ac{ood} (de $231M$ a $749M$). O maior número de cache misses do \ac{dod} resultou em uma performance inferior para o Problema~B. Contudo, o modelo \ac{dod} ainda proporcionou uma melhor engenharia de software. Adicionalmente, a diferença de performance no Problema~B (quando o \ac{dod} é mais lento) é muito menor do que a performance atingida no Problema~A (quando o \ac{dod} é mais rápido).
  
@@ -86,7 +86,7 @@ Na Figura~\ref{fig:runtimeProblemB} esta apresentado o tempo de execução (eixo
     \label{fig:runtimeProblemB}
 \end{figure}
 
-\section{Problema C: Clusterização de Registradores}
+\section{Estudo de Caso C:}
 \label{sec:problema_c}
 
 A Clusterização de Registradores consiste em identificar células síncronas próximas e agrupa-las em um único \textit{cluster}. Para resolver este problema foi implementado o algoritmo clássico K-Means~\cite{selim1984k}. K-Means é um algoritmo clássico de agrupamento de elementos, não utilizado somente para register clustering, mas também em diferentes áreas como: \textit{machine learning} e \textit{data mining}.
