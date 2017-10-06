@@ -6,7 +6,7 @@ Este capítulo apresenta os resultados experimentais preliminares obtidos por es
 \section{Infraestrutura experimental}
 \label{sec:infraestrutura_experimental}
 
-Os experimentos realizados utilizaram o conjunto de benchmarks disponibilizados pela competição \textit{ICCAD 2015 CAD Contest (problem C: Incremental Timing-Driven Placement)} \cite{kim2015}, o qual inclui 8 circuitos que possuem entre 768k e 1,93M células, todos derivados de circuitos industriais. Optou-se por utilizar tal infraestrutura pois a mesma disponibiliza circuitos com número de células compatível com circuitos contemporâneos. Além disso, tal infraestrutura é de acesso aberto, o que facilita a comparação experimental deste trabalho com futuros trabalhos que possivelmente serão realizados por terceiros. Como biblioteca básica, utilizou-se a Ophidian: Open-Source Library for Physical Design Research and Teaching~\cite{ophidian}.
+Os experimentos realizados utilizaram o conjunto de benchmarks disponibilizados pela competição \textit{ICCAD 2015 CAD Contest (problema C: Incremental Timing-Driven Placement)} \cite{kim2015}, o qual inclui 8 circuitos que possuem entre 768k e 1,93M células, todos derivados de circuitos industriais. Optou-se por utilizar tal infraestrutura pois a mesma disponibiliza circuitos com número de células compatível com circuitos contemporâneos. Além disso, tal infraestrutura é de acesso aberto, o que facilita a comparação experimental deste trabalho com futuros trabalhos que possivelmente serão realizados por terceiros. Como biblioteca básica, utilizou-se a Ophidian: Open-Source Library for Physical Design Research and Teaching~\cite{ophidian}.
 
 Todos os experimentos foram executados em um computador Linux com processador Intel\textsuperscript{\textregistered} Core\textsuperscript{\textregistered} i5-4460 CPU @ 3.20~GHz.
 A Figura~\ref{fig:architectureMemoryZeus} apresenta de forma gráfica a arquitetura deste computador.
@@ -29,7 +29,7 @@ Os experimentos que avaliam o tempo de execução podem apresentar resultados di
 
 Para avaliar o impacto que a organização dos dados pode causar em problemas de \textit{Physical Design}, será avaliado o \textbf{número de cache misses} e o \textbf{tempo de execução} para três problemas. São eles:
 \begin{itemize}
-    \item Problema A: Verificar se cada célula do circuito está contida dentro dos  limites físicos do chip. Neste cenário somente uma propriedade é necessário para cada célula. Portanto, a localidade dos dados será totalmente explorada na implementação com \ac{dod}. Sendo assim, este problema representa o melhor caso para implementações com o modelo de dados \ac{dod}.
+    \item Problema A: Verificar se cada célula do circuito está contida dentro dos  limites físicos do circuito integrado. Neste cenário somente uma propriedade é necessário para cada célula. Portanto, a localidade dos dados será totalmente explorada na implementação com \ac{dod}. Sendo assim, este problema representa o melhor caso para implementações com o modelo de dados \ac{dod}.
     \item Problema B: Estimar o comprimento de todas as interconexões do circuito. Este cenário acessa diferentes propriedades das entidades. Portanto, não pode explorar eficientemente a localidade de dados fornecida por \ac {dod}, uma vez que as propriedades dos pinos em uma única interconexão podem não ser contíguas na memória, a menos que a matriz de propriedades esteja previamente ordenada.
     \item Problema C: Clusterização de Registradores. Este cenário representa uma tarefa mais complexa que pertence a síntese física de um \ac{ic}.
 \end{itemize}
@@ -38,13 +38,13 @@ Para cada problema listado acima, foram implementados protótipos de software se
 Estes protótipos foram implementados utilizando linguagem de alto nível C++ e o código fonte encontra-se disponível online no repositório GitHub da Ophidian~\cite{ophidian}.
 
 As Subseções \ref{sec:problema_a} a \ref{sec:problema_c} a seguir apresentam os resultados preliminares para os três problemas avaliados.
-Todos os resultados apresentados nestas seções são a média de 30 execuções. 
+Todos os resultados apresentados nestas seções são a média de 30 execuções.
 Por fim, a Subseção \ref{sec:sintese_resultado} apresenta uma síntese de todos os resultados.
 
 \section{Estudo de Caso A:}
 \label{sec:problema_a}
 
-A Figura \ref{fig:missProblemA} apresenta o número de cache misses (eixo Y) em milhões para cada circuito avaliado (eixo X). As barras vermelhas representam o modelo de dados Orientado a Objetos (\ac{ood}). As barras azuis representam o modelo Orientado a Dados (\ac{dod}). O número total de cache misses para o \ac{dod} (de $0.5M$ a $1.4M$) foi, em média, um décimo do número atingido pelo modelo \ac{ood} (de $5.4M$ a $13.7M$). A redução no número de cache misses é proveniente diretamente da melhor organização dos dados em memória. Nesta organização, os dados de uma mesma propriedade (posição de uma determinada célula neste problema) estão armazenados contiguamente em memória. Portanto, ao ocorrer um miss na cache, somente dados úteis são recuperados da memória principal. Assim, é realizado um melhor aproveitamento dos blocos de dados recuperados da memória principal para a cache. 
+A Figura \ref{fig:missProblemA} apresenta o número de cache misses (eixo Y) em milhões para cada circuito avaliado (eixo X). As barras vermelhas representam o modelo de dados Orientado a Objetos (\ac{ood}). As barras azuis representam o modelo Orientado a Dados (\ac{dod}). O número total de cache misses para o \ac{dod} (de $0.5M$ a $1.4M$) foi, em média, um décimo do número atingido pelo modelo \ac{ood} (de $5.4M$ a $13.7M$). A redução no número de cache misses é proveniente diretamente da melhor organização dos dados em memória. Nesta organização, os dados de uma mesma propriedade (posição de uma determinada célula neste problema) estão armazenados contiguamente em memória. Portanto, ao ocorrer um miss na cache, somente dados úteis são recuperados da memória principal. Assim, é realizado um melhor aproveitamento dos blocos de dados recuperados da memória principal para a cache.
 
 \begin{figure}[ht]
     \centering
@@ -65,11 +65,11 @@ A exploração da localidade de dados reduz o tempo de acesso à memória princi
 \section{Estudo de Caso B:}
 \label{sec:problema_b}
 
-Com objetivo de avaliar o impacto da organização dos dados no pior cenário para o \ac{dod}. Nesta etapa do trabalho foi avaliado uma tarefa que necessite de diversas propriedades para solucionar o problema. 
-Diferente do Estudo de Caso~A, nesta tarefa é necessário acessar diferentes \textit{entity-component systems} (interconexões e pinos) e múltiplas propriedades. Complementarmente, os pinos pertencentes a cada interconexão podem não estar contíguos em memória, o que impacta na performance. 
+Com objetivo de avaliar o impacto da organização dos dados no pior cenário para o \ac{dod}. Nesta etapa do trabalho foi avaliado uma tarefa que necessite de diversas propriedades para solucionar o problema.
+Diferente do Estudo de Caso~A, nesta tarefa é necessário acessar diferentes \textit{entity-component systems} (interconexões e pinos) e múltiplas propriedades. Complementarmente, os pinos pertencentes a cada interconexão podem não estar contíguos em memória, o que impacta na performance.
 
 A Figura~\ref{fig:runtimeProblemB} apresenta o número de cache misses resultantes para cada modelo de programação. Pode-se observar que o número de cache misses do \ac{dod} (de $253M$ a $819M$) foi, em média, $10\%$ maior do que quando comparado ao modelo \ac{ood} (de $231M$ a $749M$). O maior número de cache misses do \ac{dod} resultou em uma performance inferior para o Problema~B. Contudo, o modelo \ac{dod} ainda proporcionou uma melhor engenharia de software. Adicionalmente, a diferença de performance no Problema~B (quando o \ac{dod} é mais lento) é muito menor do que a performance atingida no Problema~A (quando o \ac{dod} é mais rápido).
- 
+
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.7\linewidth]{img/results/missProblemB}
@@ -89,7 +89,7 @@ Na Figura~\ref{fig:runtimeProblemB} esta apresentado o tempo de execução (eixo
 \section{Estudo de Caso C:}
 \label{sec:problema_c}
 
-A Clusterização de Registradores consiste em identificar células síncronas próximas e agrupa-las em um único \textit{cluster}. Para resolver este problema foi implementado o algoritmo clássico K-Means~\cite{selim1984k}. K-Means é um algoritmo clássico de agrupamento de elementos, não utilizado somente para register clustering, mas também em diferentes áreas como: \textit{machine learning} e \textit{data mining}.
+A Clusterização de Registradores consiste em identificar células síncronas próximas e agrupá-las em um único \textit{cluster}. Para resolver este problema foi implementado o algoritmo clássico K-Means~\cite{selim1984k}. K-Means é um algoritmo clássico de agrupamento de elementos, não utilizado somente para register clustering, mas também em diferentes áreas como: \textit{machine learning} e \textit{data mining}.
 
 Para avaliar como a organização dos dados pode impactar no desempenho desta tarefa, foram implementados duas versões (sequencial e paralela) para cada modelo de organização dos dados (\ac{ood} e \ac{dod}).
 A Subseção~\ref{subsec:execucaoSequencialProblemaC} irá discutir os resultados preliminares para a execução sequencial, ao passo que, a Subseção~\ref{subsec:execucaoParalelaProblemaC} ira abordar os resultados da execução paralela.
@@ -97,7 +97,7 @@ A Subseção~\ref{subsec:execucaoSequencialProblemaC} irá discutir os resultado
 \subsection{Execução Sequencial}
 \label{subsec:execucaoSequencialProblemaC}
 
-A Figura~\ref{fig:missProblemC_sequential_rtree} apresenta o número total de cache misses (eixo Y) em milhões para cada circuito avaliado (eixo X).  
+A Figura~\ref{fig:missProblemC_sequential_rtree} apresenta o número total de cache misses (eixo Y) em milhões para cada circuito avaliado (eixo X).
 O número de cache misses para a Orientação a Dados (\ac{dod}) (de $17M$ a $173M$) foi, em média, $24\%$ menor do que o número requerido pela Orientação a Objetos (\ac{ood}) (de $29M$ a $214M$).
 Este resultado indica, como o esperado, que a localidade espacial foi melhor utilizada quando aplicou-se o \ac{dod}.
 
@@ -127,7 +127,7 @@ Pode-se notar também que a redução no número de cache misses não impactou n
 \label{subsec:execucaoParalelaProblemaC}
 
 Com objetivo de avaliar o comportamento das estruturas de dados em ambientes paralelos, foi implementado uma versão paralela do algoritmo K-Means.
-A Figura~\ref{fig:missProblemC_parallel_rtree} apresenta o número total de cache misses (eixo Y) em milhões para cada circuito avaliado (eixo X) na implementação paralela.  
+A Figura~\ref{fig:missProblemC_parallel_rtree} apresenta o número total de cache misses (eixo Y) em milhões para cada circuito avaliado (eixo X) na implementação paralela.
 Pode-se notar que o número total de cache misses reduziu comparado as versões sequenciais. Isto se deve ao fato de que a implementação paralela usa os caches L1 e L2 de todos os núcleos, aumentando a quantidade de memória disponível. Outro benefício é que o terceiro nível da cache (L3) é compartilhado entre todos os cores do processador.
 O número de falhas na cache para \ac{dod} (de $7M$ a $131M$) foi, em média, $20\%$ menor do que o alcançado pelo \ac{ood} (de $17M$ a $159M$). Este resultado demonstra que, como esperado, a organização de dados levou a um número menor de cache misses, mesmo para a implementação paralela.
 
@@ -151,7 +151,7 @@ A redução de cache misses impactou novamente no tempo de execução. A Figura~
 Observe que, enquanto a implementação sequencial \ac{dod} é em média $ 7.5 \% $ mais rápida do que a implementação \ac{ood}, na implementação paralela essa diferença aumentam para $ 15 \% $.
 Esses resultados mostram que a aceleração alcançada pela implementação paralela é maior quando aplicada usando o modelo de programação \ac{dod}, mesmo que a diferença no número de cache misses seja menor entre as implementações ($ 20 \% $ no cenário paralelo comparado a $ 24 \% $ no cenário sequencial).
 
-Na verdade, considerando apenas as versões orientadas a dados (\ac{dod}), a implementação paralela alcançou um speedup\footnote{A métrica \textit{speedup} representa a relação entre os tempos de execução da solução sequencial e a solução paralela para um determinado número de threads.} médio de $ 3,04 $ em relação a implementação sequencial, enquanto ao comparar as duas versões  orientadas a objetos (\ac{ood}) speedup foi de apenas $ 2,78 $.
+Na verdade, considerando apenas as versões orientadas a dados (\ac{dod}), a implementação paralela alcançou um speedup médio de $ 3,04 $ em relação a implementação sequencial, enquanto ao comparar as duas versões  orientadas a objetos (\ac{ood}) speedup foi de apenas $ 2,78 $.
 Um possível motivo para esses resultados pode advir de que o tempo de acesso à memória seja um fator mais relevante nas implementações paralelas do que nas sequenciais, tornando a programação com \ac{dod} ainda mais eficiente neste cenário.
 
 
@@ -162,9 +162,9 @@ Nesta Seção será apresentados brevemente uma síntese dos resultados prelimin
 
 A Tabela~\ref{tab:sintese_resultados} apresenta um breve resumo das reduções/acréscimos médios da técnica \ac{dod} sobre a técnica \ac{ood} no número de cache misses e tempo de execução.
 Nesta tabela, números negativos em cache misses significam que a técnica \ac{dod} resultou em menor número de cache misses.
-Ao passo que, números negativos no tempo de execução representam que a técnica \ac{dod} executou mais rápido que a técnica \ac{ood}. 
+Ao passo que, números negativos no tempo de execução representam que a técnica \ac{dod} executou mais rápido que a técnica \ac{ood}.
 
-É possível identificar, tendo como base a Tabela~\ref{tab:sintese_resultados}, de que existem classes de problemas cujo o modelo de programação \ac{dod} pode superar em até dezesseis vezes ($16 \times$) o modelo de programação \ac{ood}. 
+É possível identificar, tendo como base a Tabela~\ref{tab:sintese_resultados}, de que existem classes de problemas cujo o modelo de programação \ac{dod} pode superar em até dezesseis vezes ($16 \times$) o modelo de programação \ac{ood}.
 Porém, no caso em que o modelo \ac{dod} foi inferior no desempenho, a modularidade e a engenharia de software continuaram sendo superiores às que foram implementadas seguindo o modelo \ac{ood}.
 
 
@@ -175,7 +175,7 @@ Porém, no caso em que o modelo \ac{dod} foi inferior no desempenho, a modularid
 \resizebox{\textwidth}{!}{
 \begin{tabular}{c|r|r|r|r|}
 \cline{2-5}
-                                 & \multicolumn{2}{c|}{Execução Sequencial}                                               & \multicolumn{2}{c|}{Execução Paralela}                                                 \\ \cline{2-5} 
+                                 & \multicolumn{2}{c|}{Execução Sequencial}                                               & \multicolumn{2}{c|}{Execução Paralela}                                                 \\ \cline{2-5}
                                  & \multicolumn{1}{c|}{\# Cache misses} & \multicolumn{1}{c|}{Tempo de Execução} & \multicolumn{1}{c|}{\# Cache misses} & \multicolumn{1}{c|}{Tempo de Execução} \\ \hline
 \multicolumn{1}{|c|}{Problema A} & - 90\%                              & - 94\%                                & ---                                     & ---                                   \\ \hline
 \multicolumn{1}{|c|}{Problema B} & + 10\%                              & + 6\%                                 &  ---                                    & ---                                   \\ \hline
@@ -197,7 +197,7 @@ Sendo estas posições armazenadas contiguamente, cada bloco recuperado pelo cac
 \begin{figure}[ht]
     \centering
     \subfigure[Dados sem agrupamento]{\includegraphics[width=\linewidth]{img/results/sorting_data_example_original}}
-    
+
     \subfigure[Dados agrupados pelas interconexões]{\includegraphics[width=\linewidth]{img/results/sorting_data_example_grouping}}
     \caption[Exemplo de agrupamento dos dados]{Exemplo de possível agrupamento nos dados para problema de estimativa do comprimento de interconexão. Cada propriedade está contiguamente armazenada em memória. (a) representa as propriedades sem nenhum agrupamento de dados. (b) representa os mesmos dados apresentados em (a) porém, com as interconexões propriedades agrupadas pelas interconexões.}
     \label{fig:sorting_data_example}
