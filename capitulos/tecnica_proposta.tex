@@ -87,7 +87,7 @@ Os vetores ``\textit{Clusters}'' e ``\textit{Registers}'' armazenam as entidades
 Estas propriedades serão agora recuperadas a partir do índice de uma entidade.
 Por exemplo, a posição de um registrador $i$ é recuperada acessando o vetor ``\textit{Register Positions}'' na posição $i$.
 
-Embora o modelo \ac{dod} possa reduzir o número de cache mmisses, seu conceito não é trivial de adotar, já que a maioria dos desenvolvedores de software estão acostumados a pensar nos relacionamentos dos objetos ao invés da organização de dados. Para usar eficientemente este modelo de programação, é necessário gerenciar os arrays de propriedades para garantir que os mesmos permaneçam contíguos à medida que novos dados são adicionados e/ou removidos. Um padrão de design chamado Sistema de Componente e Entidade (\textit{Entity-Component System}) pode ser adotado para lidar com esse problema~\cite{nystrom2014game}. Este padrão de projeto será descrito na seção a seguir.
+Embora o modelo \ac{dod} possa reduzir o número de cache misses, seu conceito não é trivial de adotar, já que a maioria dos desenvolvedores de software estão acostumados a pensar nos relacionamentos dos objetos ao invés da organização de dados. Para usar eficientemente este modelo de programação, é necessário gerenciar os arrays de propriedades para garantir que os mesmos permaneçam contíguos à medida que novos dados são adicionados e/ou removidos. Um padrão de design chamado Sistema de Componente e Entidade (\textit{Entity-Component System}) pode ser adotado para lidar com esse problema~\cite{nystrom2014game}. Este padrão de projeto será descrito na seção a seguir.
 
 \section{\textit{Entity-Component System}}
 \label{sec:entity_component_system}

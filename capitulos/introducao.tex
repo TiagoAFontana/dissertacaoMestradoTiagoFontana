@@ -1,19 +1,65 @@
 \chapter{Introdução}
 \label{cap:introducao}
+    % evolução da tecnologia -> transistores menores
+    % circuitos modernos muito grande grandes -> ferramentas de EDA
+    % eletrônica de consumo -> tempo limitado para projeto de um circuito
+    % é benéfico a redução de tempo na execução dos algoritmos sem perda da qualidade da solução
+    % memória representa gargalo -> explorar a localidade na cache
+    %
+    % uma possível solução que não altera a qualidade da solução é o melhor armazenamento dos dados
+
+A evolução da tecnologia de fabricação de \acp{ic} vem permitindo uma redução drástica e contínua das dimensões dos transistores.
+O consequente aumento de densidade permite a fabricação de \acp{ic} com um número cada vez maior de transistores, podendo chegar a milhões de transistores.
+Além disso, os circuitos contemporâneos devem respeitar uma ampla gama de restrições, sejam elas de atraso, potência e\@/\@ou área.
+Adicionalmente, o processo de projeto e fabricação possui um tempo limitado para que um novo eletronico possa garantir o mercado.
+Portanto, as Ferramentas de \ac{eda} são obrigatórias no design de \acp{ic} modernos.
+
+
+
+
+ferramentas seguem um fluxo de projeto
+explicar o fluxo
+varias etapas do fluxo podem voltar
+dados das etapas podem ser reutilizados
+é benefico uma melhor organização dos dados
+
+
+Essas ferramentas de \ac{eda} devem tratar um grande volume de dados em um curto período de tempo. Portanto, essas ferramentas de \ac{eda} devem empregar otimizações de software, como o uso de melhores estruturas de dados, paralelização e exploração de local de cache.
+
+modelagem dos dados deve ser ótima para diversas relações
+OOD pode gerar uma hierarquia muito complexa e problemas sem solução (a não ser replicação do código)
+
+
+
+
+
+
+
+
+este trabalho avalia o impacto da exploração da localidade do cache no agrupamento de registros.
 
 
 \section{Justificativa}
-
-
+    o que a literatura não fez
+    Portanto, é desejável o desenvolvimento ... sobretudo uma comparação que faça uso de uma infraestrutura realista.
 
 \section{Objetivos e Contribuições Pretendidas}
-% sub item  Contribuições científicas e tecnológicas
+        Objetivo
+            Este trabalho tem como objetivo a avaliação quantitativa do impacto de diferentes
+        Objetivos específicos
+
+        Contribuições científicas e tecnológicas
+            avaliação quantitativamente do desempenho causado pela modelagem dos dados em três tarefas da síntese física
+            Resultados experimentais utilizando uma infraestrutura baseada em circuitos industriais,
 
 \section{Metodologia}
+        Implementar versões de problemas
+        avaliar quantitativamente o número de cache misses
+        avaliar quantitativamente o tempo de execução
 
-% \section{Contribuições científicas e tecnológicas}
-
-
+\section{Limitações(escopo) deste trabalho}
+        somente 3 problemas avaliados
+        somente uma arquitetura de processador e cache
+        paralelização com um chunk único
 
 \section{Organização deste trabalho}
-
