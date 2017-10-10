@@ -1,3 +1,4 @@
+% !TEX root = ../dissertacao.tex
 \chapter{Introdução}
 \label{cap:introducao}
     % evolução da tecnologia -> transistores menores
@@ -9,58 +10,92 @@
     % uma possível solução que não altera a qualidade da solução é o melhor armazenamento dos dados
 
 A evolução da tecnologia de fabricação de \acp{ic} vem permitindo uma redução drástica e contínua das dimensões dos transistores.
-O consequente aumento de densidade permite a fabricação de \acp{ic} com um número cada vez maior de transistores, podendo chegar a milhões de transistores.
-Além disso, os circuitos contemporâneos devem respeitar uma ampla gama de restrições, sejam elas de atraso, potência e\@/\@ou área.
-Adicionalmente, o processo de projeto e fabricação possui um tempo limitado para que um novo eletronico possa garantir o mercado.
+O consequente aumento de densidade permite a fabricação de \acp{ic} com um número cada vez maior de transistores, podendo este número chegar a milhões de transistores.
+Além deste número elevado de elementos, os circuitos contemporâneos devem respeitar uma ampla gama de restrições, sejam elas de atraso, potência e\@/\@ou área.
+Adicionalmente, o prazo entre o projeto e a fabricação de um chip (\textit{time-to-market}) é cada vez mais limitado para que um novo eletrônico possa garantir o mercado.
 Portanto, as Ferramentas de \ac{eda} são obrigatórias no design de \acp{ic} modernos.
 
+Ferramentas de \ac{eda} para o projeto de circuitos digitais seguem uma metodologia de projeto denominada \textit{standard cell}.
+Esta metodologia se caracteriza pela adoção de uma biblioteca de células padrão pré-projetadas e pré-caracterizadas, que descrevem as informações lógicas, físicas e elétricas dos elementos combinacionais e sequenciais a serem utilizados na síntese~\cite{kahng2011vlsi}.
 
+Um fluxo de projeto que segue a metodologia \textit{standard cell}, é tipicamente dividido em diversas etapas.
+A Figura~\ref{fig:exemplo_fluxo} apresenta as principais etapas deste fluxo, onde cada etapa pode ser subdividida em outras.
+Este fluxo inicia com a captura do comportamento do sistema, em um alto nível de abstração (especificação do sistema).
+Após, o sistema é particionado em \textit{software} e \textit{hardware} e a arquitetura da parte de \textit{hardware} é definida (projeto arquitetural).
+A seguir, é criada a descrição no \ac{rtl}, usando uma \ac{hdl}, tal como VHDL e Verilog (projeto funcional e lógico).
+Tal descrição é traduzida para o nível lógico (síntese lógica), originando uma lista de portas lógicas, elementos sequenciais (\textit{latches} e\@/\@ou \textit{flip-flops}) e interconexões, geralmente referenciada por \textit{netlist}.
 
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.5\textwidth]{img/introducao/exemplo_fluxo.pdf}
+    \caption[Etapas do fluxo \textit{standard cell}.]{Exemplo das etapas de um fluxo de projeto com metodologia \textit{standard cell}. Figura adaptada de~\citeonline{kahng2011vlsi}.}
+    \label{fig:exemplo_fluxo}
+\end{figure}
 
-ferramentas seguem um fluxo de projeto
-explicar o fluxo
-varias etapas do fluxo podem voltar
-dados das etapas podem ser reutilizados
-é benefico uma melhor organização dos dados
+Na etapa de síntese física as portas lógicas e os elementos sequenciais da \textit{netlist} são associados a descrições geométricas de associações de transistores, os quais serão posicionados e interconectados, formando uma descrição completa das máscaras que serão usadas na fabricação do \ac{ic}.
+Tal descrição ainda deve ser verificada antes de ser enviada para a fabricação (verificação e signoff).
+A verificação é realizada seguindo regras que representam as limitações físicas do meio de fabricação.
+Por exemplo, todos os fios devem estar a uma distância mínima e ter uma determinada largura mínima.
+Uma vez fabricado, o \ac{ic} é testado e empacotado na etapa de encapsulamento.
 
+Observe que a Figura~\ref{fig:exemplo_fluxo} apresenta um modelo simplificado do floxo executado no projeto de um \ac{ic} real.
+Caso a Figura~\ref{fig:exemplo_fluxo} apresentasse o fluxo completo, seria necessário inserir diversas etapas de otimização, bem como caminhos que regressam no fluxo.
+Por exemplo, caso ocorra um congestionamento numa determinada área do circuito, o roteamento do circuito pode se tornar impossível de ser realizado. Neste caso,  o projeto deve retornar a etapa de posicionamento e legalização das células.
 
-Essas ferramentas de \ac{eda} devem tratar um grande volume de dados em um curto período de tempo. Portanto, essas ferramentas de \ac{eda} devem empregar otimizações de software, como o uso de melhores estruturas de dados, paralelização e exploração de local de cache.
+Por cada etapa deste fluxo possuir grande complexidade e o tempo para todo o processo de projeto ser definido em até 12 horas~\cite{papa2011physical}, cada etapa deve ser otimizada e explorar diversas técnicas para redução de tempo de execução.
+Portanto, as ferramentas de \ac{eda} devem tratar um grande volume de dados em um curto período de tempo.
+Para isso, estas ferramentas devem empregar otimizações de software, como o uso de melhores estruturas de dados, paralelização e exploração de local de cache.
 
-modelagem dos dados deve ser ótima para diversas relações
-OOD pode gerar uma hierarquia muito complexa e problemas sem solução (a não ser replicação do código)
+Diversos trabalhos na literatura buscam otimizar o tempo de execuções de aplicações.
+\citeonline{majeti2013compiler} utilizou heurísticas e metadados inseridos no código fonte para, em tempo de compilação, selecionar as estrutura de dados para execução em CPU\@/\@GPU.
+Já \citeonline{sung2010data}, realizou conversão das estruturas de dados para aumentar a utilização da cache compartilhada empregando transformações em tempo de compilação.
+Porém, a grande maioria destes trabalhos realizam as otimizações com foco em uma única arquitetura, avaliam seus resultados com \textit{benchmarks} sintéticos e nenhum destes trabalhos considera o contexto de \textit{Physical Design}.
 
-
-
-teste
-
-
-
-
-
-este trabalho avalia o impacto da exploração da localidade do cache no agrupamento de registros.
+Outra adversidade que as ferramentas de \ac{eda} enfrentam é como modelar os dados para que as diversas relações do fluxo do projeto seja suportadas.
+Modelando com modelos tradicionais de programação, como \ac{ood}, a hierarquia das classes pode forçar a repetição de código e\@/\@ou a utilização de herança múltipla para um determinado problema.
+Herança múltipla não é suportada por todas as linguagens de programação e, mesmo quando suportada, não é recomendável porque pode levar a uma codificação confusa que dificultaria a manutenção do código~\cite{nystrom2014game}.
 
 
 \section{Justificativa}
-    o que a literatura não fez
-    Portanto, é desejável o desenvolvimento ... sobretudo uma comparação que faça uso de uma infraestrutura realista.
+
+    Apesar de vários trabalhos encontrados na literatura fazerem otimizações de software mencionadas na seção anterior, nenhum deles avalia o impacto destas diferentes estratégias quando aplicadas no contexto de Physical Design.
+
+    Portanto, é desejável uma análise quantitativa do impacto da organização dos dados no contexto de Physical Design, sobretudo, com uma comparação que faça uso de uma infraestrutura realista e bem consolidada na academia.
 
 \section{Objetivos e Contribuições Pretendidas}
-        Objetivo
-            Este trabalho tem como objetivo a avaliação quantitativa do impacto de diferentes
-        Objetivos específicos
 
-        Contribuições científicas e tecnológicas
-            avaliação quantitativamente do desempenho causado pela modelagem dos dados em três tarefas da síntese física
-            Resultados experimentais utilizando uma infraestrutura baseada em circuitos industriais,
+    Este trabalho tem como objetivo a avaliação quantitativa do impacto causado pela organização dos dados em diferentes tarefas no contexto de Physical Design.
 
-\section{Metodologia}
-        Implementar versões de problemas
-        avaliar quantitativamente o número de cache misses
-        avaliar quantitativamente o tempo de execução
+    Os objetivos específicos deste trabalho são:
 
-\section{Limitações(escopo) deste trabalho}
-        somente 3 problemas avaliados
-        somente uma arquitetura de processador e cache
-        paralelização com um chunk único
+    \begin{itemize}
+        \item Implementar três tarefas de Physical Design com diferentes estruturas de dados
+        \item Avaliar a organização dos dados proposta comparando-a com a modelagem tradicional utilizada. A comparação é realizada comparando o número de cache misses gerados pelas tarefas, bem como o tempo de execução
+        \item Avaliar paralelização das tarefas implementadas com diferentes estruturas de dados
+    \end{itemize}
+
+    Alcançando estes objetivos, espera-se alcançar as seguintes contribuições científicas e tecnológicas:
+
+    \begin{itemize}
+        \item Implementação de um sistema de componentes e entidades
+        \item Avaliação quantitativamente do desempenho causado pela modelagem dos dados em três tarefas da síntese física
+        \item Resultados experimentais utilizando uma infraestrutura baseada em circuitos industriais
+    \end{itemize}
+
+
+% \section{Metodologia}
+%         Implementar versões de problemas
+%         avaliar quantitativamente o número de cache misses
+%         avaliar quantitativamente o tempo de execução
+%
+% \section{Limitações(escopo) deste trabalho}
+%         somente 3 problemas avaliados
+%         somente uma arquitetura de processador e cache
+%         paralelização com um chunk único
 
 \section{Organização deste trabalho}
+
+O Capítulo~\ref{cap:trabalhos_correlatos} apresenta os trabalhos correlatos na otimização de estruturas de dados para uma melhor utilização da cache.
+No Capítulo~\ref{cap:tecnica_proposta} é apresentado a proposta de organização dos dados e os possíveis impactos causados pelas mesmas segundo o contexto de Physical Design.
+O Capítulo~\ref{cap:resultados} apresenta os resultados preliminares já obtidos até o presente momento da escrita deste documento.
+O Capítulo~\ref{cap:cronograma} descreve as atividades já realizadas e as tarefas que ainda precisam se realizadas para a conclusão deste mestrado. Neste capítulo também é apresentado o cronograma que demonstra que este mestrado irá ser concluído dentro do prazo disposto.
