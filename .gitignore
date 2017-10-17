@@ -1,3 +1,5 @@
+build/
+dissertacao.synctex.gz
 capitulos/old/
 .latex.json
 .latex/
