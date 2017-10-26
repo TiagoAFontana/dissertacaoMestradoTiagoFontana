@@ -32,6 +32,7 @@
 \usepackage{subfigure}
 \usepackage{booktabs}
 \usepackage{lscape}
+\usepackage{pdfpages} %para inclusão do artigo no apêndice
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Comandos usados especificamente para este documento
 % Definidos pelo AUTOR
@@ -171,6 +172,19 @@ Agradeço aos membros da banca, por cederem seu tempo para a avaliação deste t
 % Elementos pós-textuais
 \apendice
 \input{capitulos/lista_de_producoes}
+
+\chapter[Artigo ISPD 2017]{How Game Engines Can Inspire EDA Tools Development: A use case for an open-source physical design library}
+\label{ap:artigo_ISPD}
+\includepdf[pages=-]{artigos/ISPD_2017_Paper.pdf}
+
+\chapter[Artigo SBCCI 2017]{Exploiting Cache Locality to Speedup Register Clustering}
+\label{ap:artigo_SBCCI}
+\includepdf[pages=-]{artigos/SBCCI_2017_Paper.pdf}
+
+
+
+
+\label{ap:producoes}
 
 \end{document}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

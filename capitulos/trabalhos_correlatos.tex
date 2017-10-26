@@ -8,12 +8,40 @@ Posteriormente, na Seção~\ref{sec:trabalhos_cache_oblivous} serão abordados o
 Por fim, na Seção~\ref{sec:analise_trabalhos_correlatos}, será apresentado um resumo do estado da arte e suas oportunidades de contribuições científicas.
 É importante ressaltar que este capítulo não faz uma análise exaustiva de cada trabalho citado, mas busca apresentar as características mais relevantes das principais abordagens para otimização do uso da memória cache.
 
-\section{Trabalhos correlatos em \textit{cache-aware}}
+\section{Trabalhos correlatos considerando \textit{cache-aware}}
 \label{sec:trabalhos_cache_aware}
 
 Esta seção apresenta os trabalhos correlatos que consideram o modelo de \textit{cache-aware}.
 Algoritmos \textit{cache-aware} são aqueles que possuem informações sobre a arquitetura da cache a priori.
 Com estas informações estes trabalhos buscam otimizar seus comportamentos para extrair o máximo de desempenho de uma dada arquitetura.
+Como por exemplo, uma multiplicação de matrizes pode ser realizada em blocos para melhorar a localidade da cache.
+
+\begin{figure}[hb]
+    \centering
+    \subfigure[$1^a$ iteração]{\includegraphics[width=0.3\linewidth]{img/multiplicacao_matrix_a}}
+    \subfigure[$2^a$ iteração]{\includegraphics[width=0.3\linewidth]{img/multiplicacao_matrix_b}}
+    \subfigure[$3^a$ iteração]{\includegraphics[width=0.3\linewidth]{img/multiplicacao_matrix_c}}
+    \caption[Exemplo multiplicação de matrizes]{Exemplo multiplicação de matrizes com abordagem tradicional.}
+    \label{fig:multiplicacao_matriz}
+\end{figure}
+
+A Figura~\ref{fig:multiplicacao_matriz} apresenta como seria uma multiplicação de duas matrizes utilizando a abordagem tradicional. Nesta figura, os \textit{cache misses} são representados pelas setas e a linha pontilhada representa um \textit{cache hit}. Podemos notar que os blocos carregados para a cache não são reaproveitados no passo seguinte da multiplicação, o que irá gerar um grande aumento no numero de instruções executadas bem como no tempo toral de execução.
+
+Um algoritmo \textit{cache aware} para a multiplicação de matrizes poderia tirar proveito do conhecimento do tamanho do bloco da cache para executar as operações em uma sub-matriz.
+A multiplicação de matrizes em blocos é possível uma vez que esta operação é apenas uma enorme adição de uma pilha de produtos, não importando qual ordem estas adições são realizadas.
+O único cuidado que se deve tomar neste caso é para que todos os produtos sejam realizados corretamente e contribuam para as somas adequadas.
+
+\begin{figure}[hb]
+    \centering
+    \subfigure[$1^a$ iteração]{\includegraphics[width=0.3\linewidth]{img/multiplicacao_matrix_bloco_a}}
+    \subfigure[$2^a$ iteração]{\includegraphics[width=0.3\linewidth]{img/multiplicacao_matrix_bloco_b}}
+    \subfigure[$3^a$ iteração]{\includegraphics[width=0.3\linewidth]{img/multiplicacao_matrix_bloco_c}}
+    \caption[Exemplo multiplicação de matrizes em blocos]{Exemplo multiplicação de matrizes em blocos.}
+    \label{fig:multiplicacao_matriz_bloco}
+\end{figure}
+
+A Figura~\ref{fig:multiplicacao_matriz_bloco} ilustra a execução de um algoritmo \textit{cache aware} de multiplicação de matrizes. Por ter conhecimento do tamanho do bloco da cache em que este algoritmo será executado, são executadas operações de submatrizes de tamanho $4 \times 4$. Esta otimização faz com que o número de \textit{cache misses} seja reduzido drasticamente, uma vez que o bloco recuperado para a cache é totalmente utilizado.
+
 % Um desses trabalhos tem como enfoque a modelagem da arquitetura perante um conjunto de aplicações.
 
 % \subsection{\citeonline{DiazAlvarez2016}}
@@ -43,7 +71,7 @@ Majeti et al. ainda ressaltam que os metadados se fazem necessários pois a esco
 
 Para avaliar a eficiência da técnica de compilação proposta, os autores geraram \textit{benchmarks} sintéticos e avaliaram a execução compilando esses códigos com e sem os metadados. Em algumas arquiteturas como AMD 4-core A10-5880K CPU e NVIDIA Tesla M2050 GPU conseguiram um \textit{speedup}\footnote{A métrica \textit{speedup} representa a relação entre os tempos de execução da solução sequencial e a solução paralela para um determinado número de threads.} de até $27,11 \times$ e $29,50 \times$ respectivamente.
 
-\section{Trabalhos correlatos em \textit{cache-oblivious}}
+\section{Trabalhos correlatos considerando \textit{cache-oblivious}}
 \label{sec:trabalhos_cache_oblivous}
 
 Esta seção apresenta os trabalhos correlatos que consideram o modelo de \textit{cache-oblivious}.
