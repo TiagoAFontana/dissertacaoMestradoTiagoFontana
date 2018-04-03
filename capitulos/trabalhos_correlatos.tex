@@ -4,7 +4,7 @@
 
 Este capítulo revisa os principais trabalhos de otimização do uso da memória cache.
 Inicialmente, na Seção~\ref{sec:trabalhos_cache_aware} serão abordados os trabalhos correlatos que consideram informações da arquitetura da memória cache (\textit{cache-aware}).
-Posteriormente, na Seção~\ref{sec:trabalhos_cache_oblivous} serão abordados os trabalhos que desprezam informações sobre a memória cache a qual o programa será executado (\textit{cache-oblivious}).
+Posteriormente, na Seção~\ref{sec:trabalhos_cache_oblivous} serão abordados os trabalhos que desprezam informações sobre a arquitetura de memória cache em que o programa será executado (\textit{cache-oblivious}).
 Por fim, na Seção~\ref{sec:analise_trabalhos_correlatos}, será apresentado um resumo do estado da arte e suas oportunidades de contribuições científicas.
 É importante ressaltar que este capítulo não faz uma análise exaustiva de cada trabalho citado, mas busca apresentar as características mais relevantes das principais abordagens para otimização do uso da memória cache.
 
@@ -62,10 +62,10 @@ A Figura~\ref{fig:multiplicacao_matriz_bloco} ilustra a execução de um algorit
 
 \subsection{\citeonline{majeti2013compiler}}
 
-O trabalho de \citeonline{majeti2013compiler} possui como objetivo principal determinar o melhor \textit{layout} dos dados para um determinado programa. Segundo o autor, o \textit{layout} ideal para um programa computacional depende de se o mesmo é executado em um núcleo de CPU, uma GPU discreta, ou em uma GPU integrada (juntamente com outros fatores). Com isso, para obter programas que extraíssem todo o potencial de uma arquitetura, seria necessário rescrever o código fonte para cada arquitetura de CPU\@/\@GPU.
+O trabalho de \citeonline{majeti2013compiler} possui como objetivo principal determinar o melhor leiaute dos dados para um determinado programa. Segundo o autor, o leiaute ideal para um programa computacional depende de se o mesmo é executado em um núcleo de CPU, uma GPU discreta, ou em uma GPU integrada (juntamente com outros fatores). Com isso, para obter programas que extraíssem todo o potencial de uma arquitetura, seria necessário rescrever o código fonte para cada arquitetura de CPU\@/\@GPU.
 
-Para sanar o problema da reescrita do código para cada arquitetura, \citeonline{majeti2013compiler} propõem a inserção de metadados nos códigos-fonte. Estes metadados guiariam um compilador a selecionar as melhores estruturas de dados para uma dada arquitetura de CPU\@/\@GPU. Com isso, o compilador é capaz de escolher e converter os dados de \ac{aos} para \ac{soa} e vice versa.
-% Neste trabalho também é apresentado que a escolha do \textit{layout} de dados que maximiza o número de acessos coalescidos (acessos que utilizam o mesmo bloco da cache e, portanto, minimizam o número de cache misses) em uma GPU é NP-completo~\cite{wu2013complexity}.
+Para sanar o problema da reescrita do código para cada arquitetura, \citeonline{majeti2013compiler} propõem a inserção de metadados nos códigos-fonte. Estes metadados guiariam um compilador a selecionar as melhores estruturas de dados para uma dada arquitetura de CPU\@/\@GPU. Com isso, o compilador é capaz de escolher e converter os dados de \ac{aos} para \ac{soa} e vice-versa.
+% Neste trabalho também é apresentado que a escolha do leiaute dos dados que maximiza o número de acessos coalescidos (acessos que utilizam o mesmo bloco da cache e, portanto, minimizam o número de cache misses) em uma GPU é NP-completo~\cite{wu2013complexity}.
 Majeti et al. ainda ressaltam que os metadados se fazem necessários pois a escolha de um leiaute de dados que maximiza o número de acessos coalescidos (acessos que utilizam o mesmo bloco da cache e, portanto, minimizam o número de cache misses) para uma GPU é NP-completo. A prova que esta escolha é da classe NP-completo foi realizada por~\citeonline{wu2013complexity}.
 
 
@@ -82,8 +82,8 @@ Algoritmos \textit{cache-oblivious} (ou \textit{cache-tran\-scen\-dent}) são al
 O trabalho de \citeonline{li2014} tem como enfoque o gerenciamento da cache compartilhada em processadores multi-core.
 Segundo o autor, a gestão do compartilhamento de cache não é apenas para alcançar um bom desempenho, mas também para garantir um desempenho estável em um ambiente dinâmico; e considerando não apenas programas paralelos, mas também programas sequenciais co-executados uns com os outros.
 
-Para identificar onde o gerenciamento da cache pode incidir, os autores descrevem um método para reorganizar o código para um \textit{layout} ideal com base no \ac{pdg}.
-Com estas informações, é construído um \ac{trg}~\cite{gloy1999procedure} para otimizar o \textit{layout} do código em tempo de compilação.
+Para identificar onde o gerenciamento da cache pode incidir, os autores descrevem um método para reorganizar o código para um leiaute ideal com base no \ac{pdg}.
+Com estas informações, é construído um \ac{trg}~\cite{gloy1999procedure} para otimizar o leiaute do código em tempo de compilação.
 A otimização realiza duas transformações: reordenamento global das funções e\@/\@ou reordenamento dos blocos inter-procedurais. Estes reordenamentos são baseados na afinidade do acesso à cache.
 
 Para mensurar suas otimizações, os autores utilizaram os \textit{benchmarks} SPEC CPU 2006~\cite{spec2006}, realizando os experimentos tanto em uma máquina real como em um simulador de instruções da cache. Para medir a proporção de cache misses, utilizaram contadores de desempenho de hardware.
@@ -104,9 +104,9 @@ Com a paralelização e remoção das dependências artificiais, Tang et al. ati
 
 % O trabalho de \citeonline{qasem2017characterizing} caracteriza o impacto no desempenho da organização dos dados em arquiteturas de \ac{hpc} com sistemas de memória heterogêneos e de vários níveis.
 
-Segundo os autores, este é o primeiro trabalho a considerar a organização dos dados juntamente com o \textit{layout} da memória.
-\citeonline{qasem2017characterizing} caracterizam os problemas de desempenho com a organização de dados em arquiteturas de memória heterogêneas, visando descobrir os cenários aos quais seria rentável realizar uma reorganização das estruturas de dados compartilhadas para uma maior performance.
-Segundo o autor, a eficiência do acesso aos dados é impactada pelos padrões de acesso a memória, \textit{layout} da estrutura de dados e características do caminho sobre o qual os dados serão transferidos entre o processador e a unidade de memória.
+Segundo os autores, este é o primeiro trabalho a considerar a organização dos dados juntamente com o leiaute da memória.
+\citeonline{qasem2017characterizing} caracterizam os problemas de desempenho com a organização de dados em arquiteturas de memória heterogêneas, visando descobrir os cenários aos quais seria rentável realizar uma reorganização das estruturas de dados compartilhadas para uma maior desempenho.
+Segundo o autor, a eficiência do acesso aos dados é impactada pelos padrões de acesso à memória, leiaute da estrutura de dados e características do caminho sobre o qual os dados serão transferidos entre o processador e a unidade de memória.
 
 Com base no estudo realizado sobre os efeitos das organização de dados tradicionais para sistemas de memória heterogêneos, como \ac{aos} e \ac{soa}, os autores propõem uma nova estrutura de dados denominada \ac{ca}.
 Esta estrutura de dados se comporta tanto como \ac{aos} ou \ac{soa}, dependendo do tipo de acesso a dados que está sendo realizado.
@@ -153,6 +153,6 @@ Porém, a grande maioria destes trabalhos avaliam seus resultados com \textit{be
 
 Não foram localizados trabalhos que considerassem otimizações de software para \textit{cache-oblivious} no contexto de \textit{Physical Design}.
 Portanto este trabalho possui como principal diferencial a aplicação de técnicas de otimizações no contexto de \textit{Physical Design}.
-Estas otimizações serão implementadas numa biblioteca open-source para ensino e pesquisa de síntese física chamada Ophidian~\cite{ophidian}.
-Este trabalho aborda o modelo de \textit{Cache-Oblivious} por ser uma biblioteca open-source e as otimizações carecem suportar diversas arquiteturas.
+Estas otimizações serão implementadas numa biblioteca \textit{open source} para ensino e pesquisa de síntese física chamada Ophidian~\cite{ophidian}.
+Este trabalho aborda o modelo de \textit{Cache-Oblivious} por ser uma biblioteca \textit{open source}                                                                                                                                                                e as otimizações carecem suportar diversas arquiteturas.
 Para avaliar os 3 algoritmos de \textit{Physical Design} considerando um senário realista, este trabalho irá utilizar circuitos industriais providos para a análise do problema C da competição ICCAD 2015 CAD Contest~\cite{kim2015}.

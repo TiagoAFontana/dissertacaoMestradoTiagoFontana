@@ -13,7 +13,7 @@ A evolução da tecnologia de fabricação de \acp{ic} vem permitindo uma reduç
 O consequente aumento de densidade permitiu que atualmente sejam fabricados \acp{ic} com dezenas de milhões de transistores.
 Além deste número elevado de elementos, os circuitos contemporâneos devem respeitar uma ampla gama de restrições, sejam elas de atraso, potência e\@/\@ou área.
 Adicionalmente, o prazo entre o projeto e a fabricação de um chip é cada vez mais limitado para que um novo produto eletrônico possa garantir o mercado (\textit{time-to-market})~\cite{papa2011physical}.
-Neste contexto, é mandatório o uso de Ferramentas de \ac{eda} no projeto de \acp{ic} contemporâneos.
+Neste contexto, é mandatório o uso de ferramentas de \ac{eda} no projeto de \acp{ic} contemporâneos.
 % Portanto, as Ferramentas de \ac{eda} são obrigatórias no design de \acp{ic} modernos.
 
 % Ferramentas de \ac{eda} para o projeto de circuitos digitais seguem uma metodologia de projeto denominada \textit{standard cell}.
@@ -36,7 +36,7 @@ Tal descrição é traduzida para o nível lógico (síntese lógica), originand
 
 Na etapa de síntese física as portas lógicas e os elementos sequenciais da \textit{netlist} são associados a descrições geométricas de associações de transistores referenciadas por "células", as quais estão disponíveis na \textit{standard cells}.
 Após, as células são posicionadas e interconectadas, formando uma descrição completa das máscaras que serão usadas na fabricação do \ac{ic}.
-Tal descrição ainda deve ser verificada antes de ser enviada para a fabricação (verificação e signoff).
+Tal descrição ainda deve ser verificada antes de ser enviada para a fabricação.
 A verificação é realizada seguindo regras que representam as limitações físicas do meio de fabricação.
 Por exemplo, todos os fios devem estar a uma distância mínima e ter uma determinada largura mínima.
 Uma vez fabricado, o \ac{ic} é testado e empacotado (etapa de encapsulamento).
@@ -60,8 +60,8 @@ Para isso, estas ferramentas devem empregar otimizações de software, como o us
 % Modelando com modelos tradicionais de programação, como \ac{ood}, a hierarquia das classes pode forçar a repetição de código e\@/\@ou a utilização de herança múltipla para um determinado problema.
 % Herança múltipla não é suportada por todas as linguagens de programação e, mesmo quando suportada, não é recomendável porque pode levar a uma codificação confusa que dificultaria a manutenção do código~\cite{nystrom2014game}.
 
-Este trabalho irá focar na exploração da localidade da cache no contexto de ferramentas de Physical Design.
-Para aumentar a localidade da cache, este trabalho irá aplicar otimizações previamente ao código ser compilado.
+Este trabalho irá focar na exploração da localidade, espacial e temporal, pela cache no contexto de ferramentas de Physical Design.
+Para aumentar a localidade dos dados, este trabalho irá aplicar otimizações previamente ao código ser compilado.
 Para realizar estas otimizações, primeiro serão identificadas as características de cada algoritmo e sobre quais dados este irá operar.
 Posteriormente, será otimizada a organização destes dados de forma a maximizar a utilização dos dados recuperados pela cache.
 Por fim, este trabalho ira comparar a abordagem tradicional (orientada a objetos) com a abordagem otimizada considerando o número total de \textit{cache misses} e o tempo de execução. Informações pertinentes a arquiteturas de cache (tamanho de blocos e número de níveis) não serão consideradas no momento da organização dos dados.
@@ -83,14 +83,14 @@ Estas informações não serão consideradas pois a organização dos dados deve
 
     \begin{itemize}
         \item Implementar três algoritmos de Physical Design com diferentes tipos de organização dos dados;
-        \item Avaliar as organizações dos dados propostas comparando-as com a modelagem tradicional utilizada, resultante do uso de orientação a objetos. A comparação é realizada comparando o número de \textit{cache misses} gerados pelas algoritmos, bem como o tempo de execução;
+        \item Avaliar as organizações dos dados propostas comparando-as com a modelagem tradicional utilizada, resultante do uso de orientação a objetos. A comparação será realizada comparando o número de \textit{cache misses} gerados pelas implementações dos algoritmos, bem como o tempo de execução;
         \item Avaliar a facilidade e o desempenho da paralelização dos algoritmos implementados com as diferentes organização dos dados.
     \end{itemize}
 
     Cumprindo estes objetivos, espera-se alcançar as seguintes contribuições científicas e tecnológicas:
 
     \begin{itemize}
-        \item Implementação de um sistema de componentes e entidades;
+        \item Implementação de um sistema de componentes e entidades. Estes conceitos serão detalhados na \todo{Seção blablabla} desta dissertação;
         \item Avaliação quantitativa do desempenho causado pela modelagem dos dados em três algoritmos da síntese física;
         \item Resultados experimentais utilizando uma infraestrutura baseada em circuitos industriais;
         \item Resultados experimentais analisando problemas reais com dados realistas. Como dados de entrada serão utilizados circuitos industriais oriundos da competição ICCAD CAD Context 2015~\cite{kim2015}.
@@ -113,4 +113,4 @@ Estas informações não serão consideradas pois a organização dos dados deve
 O Capítulo~\ref{cap:trabalhos_correlatos} apresenta os trabalhos correlatos na otimização da organização dos dados para uma melhor utilização da cache.
 No Capítulo~\ref{cap:tecnica_proposta} é apresentada a proposta de organização dos dados e os possíveis impactos causados pelas mesmas segundo o contexto de Physical Design.
 O Capítulo~\ref{cap:resultados} apresenta os resultados preliminares já obtidos até o presente momento da escrita deste documento.
-O Capítulo~\ref{cap:cronograma} descreve as atividades já realizadas e as que ainda precisam serem realizadas para a conclusão deste mestrado. Neste capítulo também é apresentado o cronograma que demonstra que este mestrado será concluído dentro do prazo disposto.
+% O Capítulo~\ref{cap:cronograma} descreve as atividades já realizadas e as que ainda precisam serem realizadas para a conclusão deste mestrado. Neste capítulo também é apresentado o cronograma que demonstra que este mestrado será concluído dentro do prazo disposto.

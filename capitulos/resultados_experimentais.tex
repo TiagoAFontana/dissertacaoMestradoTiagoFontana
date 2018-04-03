@@ -2,7 +2,7 @@
 \chapter{Resultados Experimentais Preliminares}
 \label{cap:resultados}
 
-Este capítulo apresenta os resultados experimentais preliminares obtidos por este trabalho até o momento da escrita deste documento. Inicialmente, ele descreve a infraestrutura experimental utilizada. Em seguida, analisa três algoritmos de Physical Design. Por fim, apresenta uma síntese dos resultados e apresenta algumas melhorias e expectativas dos trabalhos a serem realizados até o a conclusão do mestrado.
+Este capítulo apresenta os resultados experimentais preliminares obtidos por este trabalho até o momento da escrita deste documento. Inicialmente, ele descreve a infraestrutura experimental utilizada. Em seguida, analisa três algoritmos de Physical Design. Por fim, apresenta uma síntese dos resultados e apresenta algumas melhorias e expectativas dos trabalhos a serem realizados até  a conclusão do mestrado.
 
 \section{Infraestrutura experimental}
 \label{sec:infraestrutura_experimental}
@@ -13,8 +13,8 @@ Todos os experimentos foram executados em um computador Linux com processador In
 A Figura~\ref{fig:architectureMemoryZeus} apresenta de forma gráfica a arquitetura deste computador.
 Este computador possui 32GB~RAM (DDR3 a 1600MHz) como memória principal.
 Seu processador possui quatro núcleos idênticos e três níveis de cache.
-Os primeiros dois níveis de cache~(L1 and L2) são privados para cada core do processador e possuem 64KB e 256KB de capacidade respectivamente.
-O terceiro nível da cache~(L3) é compartilhado entre todo o processador e possui 6144KB de capacidade.
+Os primeiros dois níveis de cache~(L1 and L2) são privativos para cada core do processador e possuem 64KB e 256KB de capacidade, respectivamente.
+O terceiro nível de cache~(L3) é compartilhado e possui 6144KB de capacidade.
 
 \begin{figure}[ht]
     \centering
@@ -23,20 +23,20 @@ O terceiro nível da cache~(L3) é compartilhado entre todo o processador e poss
     \label{fig:architectureMemoryZeus}
 \end{figure}
 
-Os experimentos que avaliam o tempo de execução podem apresentar resultados diferentes em cada realização, devido a variações causadas pelo computador utilizado. Portanto, para aumentar a confiança estatística obtida pelos experimentos, os mesmos foram repetidos 30 vezes.% , o que resultou em 99\% de confiança estatística\footnote{A confiança estatística foi medida utilizando o teste t de Student para p=0,01.}.
+Os experimentos que avaliam o tempo de execução podem apresentar resultados diferentes em cada realização, devido a interferências causadas pelo sistema operacional utilizado. Portanto, para aumentar a confiança estatística obtida pelos experimentos, os mesmos foram repetidos 30 vezes, o que resultou em 99\% de confiança estatística\footnote{A confiança estatística foi medida utilizando o teste t de Student para p=0,01.}.
 
 \section{Metodologia Experimental}
 \label{sec:metodologia_experimental}
 
 Para avaliar o impacto que a organização dos dados pode causar em problemas de \textit{Physical Design}, será avaliado o \textbf{número de cache misses} e o \textbf{tempo de execução} para três algoritmos. São eles:
 \begin{itemize}
-    \item Problema A: Verificar se cada célula do circuito está contida dentro dos  limites físicos do circuito integrado. Neste cenário somente uma propriedade é necessário para cada célula. Portanto, a localidade dos dados será totalmente explorada na implementação com \ac{dod}. Sendo assim, este problema representa o melhor caso para implementações com o modelo de dados \ac{dod};
+    \item Problema A: Verificar se cada célula do circuito está contida dentro dos  limites físicos do circuito integrado. Neste cenário somente uma propriedade é necessária para cada célula. Portanto, a localidade dos dados será totalmente explorada na implementação com \ac{dod}. Sendo assim, este problema representa o melhor caso para implementações com o modelo de dados \ac{dod};
     \item Problema B: Estimar o comprimento de todas as interconexões do circuito. Este cenário acessa diferentes propriedades de diferentes entidades. Portanto, não pode explorar eficientemente a localidade de dados fornecida por \ac {dod}, uma vez que as propriedades dos pinos em uma única interconexão podem não ser contíguas na memória, a menos que a matriz de propriedades esteja previamente agrupada;
     \item Problema C: Clusterização de Registradores. Este cenário representa uma tarefa mais complexa que pertence a síntese física de um \ac{ic}.
 \end{itemize}
 
 Para cada problema listado acima, foram implementados protótipos de software seguindo duas organizações de dados: \ac{ood} e \ac{dod}.
-Estes protótipos foram implementados utilizando linguagem de alto nível C++ e o código fonte encontra-se disponível online no repositório GitHub da Ophidian~\cite{ophidian}.
+Estes protótipos foram implementados utilizando linguagem de alto nível C++ e o código fonte encontra-se disponível \textit{online} no repositório GitHub da Ophidian~\cite{ophidian}.
 
 As Subseções \ref{sec:problema_a} a \ref{sec:problema_c} a seguir apresentam os resultados preliminares para os três algoritmos avaliados.
 Para uma maior confiança estatística, todos os resultados apresentados nestas seções são a média de 30 execuções.
@@ -54,7 +54,7 @@ A Figura \ref{fig:missProblemA} apresenta o número de cache misses (eixo Y) em 
     \label{fig:missProblemA}
 \end{figure}
 
-A exploração da localidade de dados reduz o tempo de acesso à memória principal, que representa o gargalo principal. Esta redução no tempo de acesso a memória pode ser observada na Figura~\ref{fig:runtimeProblemA}. Este gráfico retrata o tempo de execução (eixo Y) em milissegundos para cada circuito avaliado (eixo X). Pode-se observar que a versão \ac{dod} executou mais rápido em todos os circuitos avaliados. Os tempos de execução da versão \ac{dod} foram entre $4ms$ e $12ms$, enquanto os tempos de execução de \ac{ood} foram entre $74ms$ e $186ms$. Portanto, para o problema~A, \ac{dod} é em média $94\%$ ($16\times$) mais rápido do que \ac{ood}.
+A exploração da localidade de dados reduz o tempo de acesso à memória principal, que representa o gargalo principal. Esta redução no tempo de acesso à memória pode ser observada na Figura~\ref{fig:runtimeProblemA}. Este gráfico retrata o tempo de execução (eixo Y) em milissegundos para cada circuito avaliado (eixo X). Pode-se observar que a versão \ac{dod} executou mais rápido em todos os circuitos avaliados. Os tempos de execução da versão \ac{dod} foram entre $4ms$ e $12ms$, enquanto os tempos de execução de \ac{ood} foram entre $74ms$ e $186ms$. Portanto, para o problema~A, \ac{dod} é em média $94\%$ ($16\times$) mais rápido do que \ac{ood}.
 
 \begin{figure}[ht]
     \centering
@@ -92,7 +92,7 @@ Na Figura~\ref{fig:runtimeProblemB} esta apresentado o tempo de execução (eixo
 
 A Clusterização de Registradores consiste em identificar células síncronas próximas e agrupá-las em um único \textit{cluster}. Para resolver este problema foi implementado o algoritmo clássico K-Means~\cite{selim1984k}. K-Means é um algoritmo clássico de agrupamento de elementos, não utilizado somente para register clustering, mas também em diferentes áreas como: \textit{machine learning} e \textit{data mining}.
 
-Para avaliar como a organização dos dados pode impactar no desempenho desta tarefa, foram implementados duas versões (sequencial e paralela) para cada modelo de organização dos dados (\ac{ood} e \ac{dod}).
+Para avaliar como a organização dos dados pode impactar no desempenho desta tarefa, foram implementadas duas versões (sequencial e paralela) para cada modelo de organização dos dados (\ac{ood} e \ac{dod}).
 A Subseção~\ref{subsec:execucaoSequencialProblemaC} irá discutir os resultados preliminares para a execução sequencial, ao passo que, a Subseção~\ref{subsec:execucaoParalelaProblemaC} ira abordar os resultados da execução paralela.
 
 \subsection{Execução Sequencial}
@@ -129,8 +129,8 @@ Pode-se notar também que a redução no número de cache misses não impactou n
 
 Com objetivo de avaliar o comportamento das estruturas de dados em ambientes paralelos, foi implementado uma versão paralela do algoritmo K-Means.
 A Figura~\ref{fig:missProblemC_parallel_rtree} apresenta o número total de cache misses (eixo Y) em milhões para cada circuito avaliado (eixo X) na implementação paralela.
-Pode-se notar que o número total de cache misses reduziu comparado as versões sequenciais. Isto se deve ao fato de que a implementação paralela usa os caches L1 e L2 de todos os núcleos, aumentando a quantidade de memória disponível. Outro benefício é que o terceiro nível da cache (L3) é compartilhado entre todos os cores do processador.
-O número de falhas na cache para \ac{dod} (de $7M$ a $131M$) foi, em média, $20\%$ menor do que o alcançado pelo \ac{ood} (de $17M$ a $159M$). Este resultado demonstra que, como esperado, a organização de dados levou a um número menor de cache misses, mesmo para a implementação paralela.
+Pode-se notar que o número total de cache misses reduziu comparado às versões sequenciais. Isto se deve ao fato de que a implementação paralela usa as caches L1 e L2 de todos os núcleos, aumentando a quantidade de memória disponível. Outro benefício é que o terceiro nível da cache (L3) é compartilhado entre todos os cores do processador.
+O número de faltas na cache para \ac{dod} (de $7M$ a $131M$) foi, em média, $20\%$ menor do que o alcançado pelo \ac{ood} (de $17M$ a $159M$). Este resultado demonstra que, como esperado, a organização de dados levou a um número menor de cache misses, mesmo para a implementação paralela.
 
 \begin{figure}[ht]
     \centering
@@ -152,14 +152,14 @@ A redução de cache misses impactou novamente no tempo de execução. A Figura~
 Observe que, enquanto a implementação sequencial \ac{dod} é em média $ 7.5 \% $ mais rápida do que a implementação \ac{ood}, na implementação paralela essa diferença aumentam para $ 15 \% $.
 Esses resultados mostram que a aceleração alcançada pela implementação paralela é maior quando aplicada usando o modelo de programação \ac{dod}, mesmo que a diferença no número de cache misses seja menor entre as implementações ($ 20 \% $ no cenário paralelo comparado a $ 24 \% $ no cenário sequencial).
 
-Na verdade, considerando apenas as versões orientadas a dados (\ac{dod}), a implementação paralela alcançou um speedup médio de $ 3,04 $ em relação a implementação sequencial, enquanto ao comparar as duas versões  orientadas a objetos (\ac{ood}) speedup foi de apenas $ 2,78 $.
-Um possível motivo para esses resultados pode advir de que o tempo de acesso à memória seja um fator mais relevante nas implementações paralelas do que nas sequenciais, tornando a programação com \ac{dod} ainda mais eficiente neste cenário.
+Considerando apenas as versões orientadas a dados (\ac{dod}), a implementação paralela alcançou um speedup médio de $ 3,04 $ em relação a implementação sequencial, enquanto ao comparar as duas versões  orientadas a objetos (\ac{ood}) speedup foi de apenas $ 2,78 $.
+Um possível motivo para esses resultados pode advir de que o tempo de acesso à memória seja um fator mais impactante nas implementações paralelas do que nas sequenciais, tornando a programação com \ac{dod} ainda mais eficiente neste cenário.
 
 
 \section{Síntese dos Resultados e Perspectivas}
 \label{sec:sintese_resultado}
 
-Nesta Seção será apresentados brevemente uma síntese dos resultados preliminares obtidos até a escrita deste documento. Posteriormente serão apresentadas as perspectivas de melhorias destes resultados.
+Nesta seção será apresentado brevemente uma síntese dos resultados preliminares obtidos até a escrita deste documento. Posteriormente serão apresentadas as perspectivas de melhorias destes resultados.
 
 A Tabela~\ref{tab:sintese_resultados} apresenta um breve resumo das reduções/acréscimos médios da técnica \ac{dod} sobre a técnica \ac{ood} no número de cache misses e tempo de execução.
 Nesta tabela, números negativos em cache misses significam que a técnica \ac{dod} resultou em menor número de cache misses.

@@ -4,12 +4,12 @@
 \label{cap:tecnica_proposta}
 
 Este capítulo apresenta a proposta de organização dos dados para melhorar o desempenho de algoritmos de Physical Design.
-Inicialmente será revisado alguns conceitos básicos de acesso a memoria principal para recuperação dos dados.
-Em seguida, serão discutidas as limitações do modelo de \ac{ood} e como o modelo de \ac{dod} pode sanar os mesmos.
+Inicialmente serão revisados alguns conceitos básicos de acesso à memoria principal para recuperação dos dados.
+Em seguida, serão discutidas as limitações do modelo de \ac{ood} e como o modelo de \ac{dod} pode sanar as mesmas.
 % Por fim, será apresentado como aplicar os dois modelos (OOD e DOD) em três tarefas de Physical Design.
 Por fim, na Seção~\ref{sec:entity_component_system}, será apresentado um padrão de projeto para facilitar o acesso as dados organizados segundo modelo \ac{dod}.
 
-A arquitetura de memória de computadores modernos é tipicamente hierárquica como mostrado na Figura~\ref{fig:memoryHierarchy}. Observe que os níveis mais baixos na hierarquia (por exemplo, disco rígido e memória principal) têm maior capacidade porém, possuem maior latência. Por outro lado, os níveis mais altos (por exemplo, memória cache e registradores da CPU) são rápidos, mas possuem capacidade limitada. Quando um determinado programa precisa um dado, e o mesmo não se encontra nos registradores da CPU, será realizado uma busca por este dado nos níveis mais altos da hierarquia da  cache. Quando os dados não são encontrados em algum dos níveis de cache, dizemos que ocorreu um \textbf{\textit{cache miss}}. Quando um \textit{cache miss} ocorre, os dados são acessados no nível inferior da hierarquia. No pior caso, este dado será recuperado do disco rígido e levado por todos os níveis da hierarquia. Quando o dado buscado é recuperado para a cache de mais alto nível e posteriormente armazenado num registrador da CPU, o programa que estava acessando os dados volta a executar. Caso que esses dados forem necessários novamente, e o bloco da cache não tenha sido sobrescrito, eles estarão disponível na cache e sua busca nos níveis da cache resultará em \textbf{\textit{cache hit}}~\cite{patterson2013computer}.
+A arquitetura de memória de computadores modernos é tipicamente hierárquica como mostrado na Figura~\ref{fig:memoryHierarchy}. Observe que os níveis mais baixos na hierarquia (por exemplo, disco rígido e memória principal) têm maior capacidade porém, possuem maior latência. Por outro lado, os níveis mais altos (por exemplo, memória cache e registradores da CPU) são rápidos, mas possuem capacidade limitada. Quando um determinado programa precisa um dado, e o mesmo não se encontra nos registradores da CPU, será realizada uma busca por este dado nos níveis mais altos da hierarquia da  cache. Quando os dados não são encontrados em algum dos níveis de cache, dizemos que ocorreu um \textbf{\textit{cache miss}}. Quando um \textit{cache miss} ocorre, os dados são acessados no nível inferior da hierarquia. No pior caso, este dado será recuperado do disco rígido e levado por todos os níveis da hierarquia. Quando o dado buscado é recuperado para a cache de mais alto nível e posteriormente armazenado num registrador da CPU, o programa que estava acessando os dados volta a executar. Caso esses dados forem necessários novamente, e o bloco da cache não tenha sido substituído, eles estarão disponível na cache e sua busca nos níveis da cache resultará em \textbf{\textit{cache hit}}~\cite{patterson2013computer}.
 
 \begin{figure}[h]
     \centering
@@ -21,16 +21,16 @@ A arquitetura de memória de computadores modernos é tipicamente hierárquica c
 \end{figure}
 
 
-A localidade espacial da cache (\textit{cache spatial locality}) é uma propriedade importante dos sistemas hierárquicos de memória. Esta propriedade afirma que a probabilidade de acessar um recurso da memória é maior se um recurso próximo já foi referenciado~\cite{patterson2013computer}. O sistema de cache explora esta propriedade armazenando os dados em blocos (\textit{cache blocks}). Sempre que algum dado é acessado a partir da memória principal, ele é recuperado para a cache juntamente com outros dados que estavam armazenados próximos a ele. Desta forma, se os dados próximos forem acessados posteriormente, resultarão em \textit{cache hits}.
+A localidade espacial (\textit{spatial locality}) é uma propriedade importante dos sistemas hierárquicos de memória. Esta propriedade afirma que a probabilidade de acessar uma posição da memória é maior se uma posição próxima já foi referenciada~\cite{patterson2013computer}. O sistema de cache explora esta propriedade armazenando os dados em blocos (\textit{cache blocks}). Sempre que algum dado é acessado a partir da memória principal, ele é recuperado para a cache juntamente com outros dados que estavam armazenados próximos a ele. Desta forma, se os dados próximos forem acessados posteriormente, resultarão em \textit{cache hits}.
 
-É possível explorar ainda mais a localidade espacial da cache mudando a forma como os dados são organizados em um determinado software, até mesmo no caso em que não se possui nenhuma informação de qual será a organização e tamanho da cache.
+É possível explorar ainda mais a localidade espacial dos dados mudando a forma como os mesmos são organizados em um determinado software, até mesmo no caso em que não se possui informação da arquitetura que irá executar este \textit{software}.
 Isto é possível uma vez que ao armazenar dados de uma mesma categoria de forma contígua estamos aumentando a probabilidade de um acesso gerar um \textit{cache hit}.
 
 Por exemplo, um algoritmo de Clusterização de Registradores executa operações em todas as posições dos registradores de um circuito.
 Ao armazenar todas as posições destes registradores em um único vetor contíguo, este algoritmo irá necessitar de um número inferior de \textit{cache misses} para recuperar todos os dados.
 Como consequência, o tempo de acesso aos dados é reduzido e o desempenho do software é melhorado. Esta organização de dados nem sempre é eficientemente feita pelo modelo de programação tradicional~\ac{ood}.
 Neste modelo de programação, os dados são armazenados agrupando-se todas as informações de um mesmo objeto num único registro.
-Observe que com esta abordagem, quando os objetos são recuperados para a cache, alguns dados inúteis (atributos do objeto) são carregados juntos. Portanto, a cache é desperdiçado com dados que não serão utilizados pelo algoritmo.
+Observe que com esta abordagem, quando os objetos são recuperados para a cache, alguns dados inúteis (atributos do objeto) são carregados juntos. Portanto, a cache é desperdiçada com dados que não serão utilizados pelo algoritmo.
 
 % Uma alternativa para o modelo de \ac{ood} é o modelo de programação \ac{dod}. Este modelo tem como enfoque a forma como os dados são organizados na memória.
 % % A Figura~\ref{fig:entityPropertyDOD} mostra um exemplo sobre como modelar os dados usando este modelo de programação.
@@ -70,7 +70,7 @@ Seguindo esta abordagem, o número de cache misses será menor e consequentement
 
 % Para exemplificar a diferença entre os modelos \ac{ood} e \ac{dod} na modelagem dos dados, a Figura~\ref{fig:modelo_register_clustering} apresenta uma possível solução para o problema de clusterização de registradores seguindo estes dois modelos.
 O uso de DOD também impacta em diferenças na modelagem dos dados. Por exemplo, a Figura~\ref{fig:modelo_register_clustering} apresenta uma possível solução para o problema de clusterização de registradores seguindo estes dois modelos.
-Na Figura Figura~\ref{fig:modelo_register_clustering}~(a) é apresentado a modelagem do problema com objetos. Nesta modelagem são necessárias duas classes: uma para representar os registradores (\textit{Register}) e outra para representas os clusters (\textit{Cluster}). Ambas as classes possuem dois atributos. A classe \textit{Cluster} possui a posição de seu centro e os registradores que pertencem a este cluster. A classe \textit{Register}, por sua vez, possui o nome e a posição do registrador.
+Na Figura~\ref{fig:modelo_register_clustering}~(a) é apresentado o diagrama de classes do problema com orientação a objetos. Nesta modelagem são necessárias duas classes: uma para representar os registradores (\textit{Register}) e outra para representas os clusters (\textit{Cluster}). Ambas as classes possuem dois atributos. A classe \textit{Cluster} possui a posição de seu centro e os registradores que pertencem a este cluster. A classe \textit{Register}, por sua vez, possui o nome e a posição do registrador.
 
 \begin{figure}[hb]
     \centering
@@ -85,17 +85,18 @@ Na Figura Figura~\ref{fig:modelo_register_clustering}~(a) é apresentado a model
 A Figura~\ref{fig:modelo_register_clustering}~(b) representa os mesmos dados da Figura~\ref{fig:modelo_register_clustering}~(a) porém, seguindo o modelo de programação \ac{dod}.
 % Nesta figura cada cor representa uma instância que seria criada no modelo orientado a objetos. Os vetores \textit{Clusters} e \textit{Registers} armazenam contiguamente os indices dos objetos.
 Nesta figura cada linha representa um vetor.
-Cada atributo criado no modelo \ac{ood} é aqui representado por uma propriedades e é armazenada contiguamente em um único vetor.
+Cada atributo criado no modelo \ac{ood} é aqui representado por uma propriedades, cujo armazenamento é realizado de forma contígua em um único vetor.
 Os vetores ``\textit{Clusters}'' e ``\textit{Registers}'' armazenam as entidades, sendo os demais vetores as propriedades destas entidades.
 Estas propriedades serão agora recuperadas a partir do índice de uma entidade.
 Por exemplo, a posição de um registrador $i$ é recuperada acessando o vetor ``\textit{Register Positions}'' na posição $i$.
 
-Embora o modelo \ac{dod} possa reduzir o número de cache misses, seu conceito não é trivial de adotar, já que a maioria dos desenvolvedores de software estão acostumados a pensar nos relacionamentos dos objetos ao invés da organização de dados. Para usar eficientemente este modelo de programação, é necessário gerenciar os arrays de propriedades para garantir que os mesmos permaneçam contíguos à medida que novos dados são adicionados e/ou removidos. Um padrão de projeto chamado Sistema de Componente e Entidade (\textit{Entity-Component System}) pode ser adotado para lidar com esse problema~\cite{nystrom2014game}. Este padrão de projeto será descrito na seção a seguir.
+Embora o modelo \ac{dod} possa reduzir o número de cache misses, seu conceito não é trivial de adotar.
+Para usar eficientemente este modelo de programação, é necessário gerenciar os vetores de propriedades para garantir que os mesmos permaneçam contíguos à medida que novos dados são adicionados e/ou removidos. Um padrão de projeto chamado Sistema de Componente e Entidade (\textit{Entity-Component System}) pode ser adotado para lidar com esse problema~\cite{nystrom2014game}. Este padrão de projeto será descrito na seção a seguir.
 
 \section{\textit{Entity-Component System}}
 \label{sec:entity_component_system}
 
-Esta Seção irá explanar os conceitos que são envolvidos no padrão de projetos \textit{Entity-Component System}.
+Esta seção irá explanar os conceitos que são envolvidos no padrão de projetos \textit{Entity-Component System}.
 Primeiramente serão explicados o que são Entidades e Componentes e como seriam relacionados com o padrão de projeto \ac{ood}.
 Posteriormente, será abordado como gerenciar as entidades para que operações elementares sejam em tempo computacional constante.
 
@@ -149,7 +150,8 @@ $P(j)$      & valor armazenado na j-ésima posição do vetor de propriedades $P
 \simbolo{$P(j)$}{valor armazenado na j-ésima posição de $P$}
 
 
-O Algorítimo~\ref{alg:entityCreate} descreve como o sistema da entidade cria novas entidades. Quando uma nova entidade $ e $ é criada (linha 1), o sistema da entidade atribui a $ e $ um identificador $ id_e $ equivalente ao tamanho do vetor de entidades $ E_S $ (linha 2). Então a entidade $ e $ é inserida no final do vetor de entidades $ E_S $, chamando a função $ PUSH\_BACK $ (linha 3). Finalmente, para cada propriedade $P$ associada ao sistema da entidade $S$, um valor padrão é adicionado para a nova entidade $ e $ (linhas 4-6). Observe que o identificador de $ e $ ($ id_e $) é usado como um índice para acessar os vetores de propriedades.
+
+O Algoritmo~\ref{alg:entityCreate} descreve como o sistema da entidade cria novas entidades. Quando uma nova entidade $ e $ é criada (linha 1), o sistema da entidade atribui a $ e $ um identificador $ id_e $ equivalente ao tamanho do vetor de entidades $ E_S $ (linha 2). Então a entidade $ e $ é inserida no final do vetor de entidades $ E_S $, chamando a função $ PUSH\_BACK $ (linha 3). Finalmente, para cada propriedade $P$ associada ao sistema da entidade $S$, um valor padrão é adicionado para a nova entidade $ e $ (linhas 4-6). Observe que o identificador de $ e $ ($ id_e $) é usado como um índice para acessar os vetores de propriedades.
 
 \begin{algorithm}[ht]
 %  \scriptsize

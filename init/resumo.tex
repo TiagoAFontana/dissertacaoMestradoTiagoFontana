@@ -3,14 +3,14 @@
 As ferramentas de Physical Design devem lidar com uma grande quantidades de dados para resolver problemas de circuitos com milhões de células.
 Tradicionalmente, as ferramentas de \textit{Eletronic Design Automation} (EDA) são implementadas usando o paradigma de programação orientado a objetos (OOD).
 No entanto, usar esse paradigma pode levar a objetos excessivamente complexos que resultam em desperdício de espaço de memória.
-Esse desperdício de memória prejudica a exploração da localidade da memória cache e, consequentemente, degrada o tempo de execução do software.
+Esse desperdício de memória prejudica a exploração da localidade espacial pela memória cache e, consequentemente, degrada o tempo de execução do software.
 Este trabalho propõe uma organização eficiente dos dados para três algoritmos diferentes de \textit{Physical Design}.
 Para esta organização de dados, este trabalho aplica o modelo orientado a dados \textit{Data-Oriented Design}(DOD).
-Diferentemente do modelo tradicional orientado a objetos, o modelo de programação de orientado a dados se concentra em como os dados são organizados na memória.
-Como consequência, este modelo de programação pode explorar melhor a localidade espacial da cache e reduzir o tempo total de execução.
+Diferentemente do modelo tradicional orientado a objetos, o modelo de programação orientado a dados se concentra em como os dados são organizados na memória.
+Como consequência, este modelo de programação proporciona um aumento na localidade espacial dos dados possibilitando que mais dados na cache sejam utilizados, e assim, reduzindo o tempo total de execução.
 Para avaliar o impacto do uso do modelo de programação Data-Oriented Design, implementamos dois protótipos de software (uma implementação sequencial e uma paralela) de algoritmos de \textit{Physical Design} para cada um dos modelo de programação.
-Os resultados experimentais preliminares mostraram que a implementação do orientada a dados (Data-Oriented Design) reduz o número total de \textit{cache misses} e é mais rápido do que a implementação com o paradigma Orientado a Objetos.
-
+Os resultados experimentais preliminares mostraram que a implementação do modelo orientado a dados (Data-Oriented Design) reduz o número total de \textit{cache misses} e é mais rápido do que a implementação com o paradigma Orientado a Objetos.
+\todo{Colocar resultados no final do resumo}
 }
 \palavrasChave{ 
 Localidade da Cache; Eletronic Design Automation; Physical Design; Otimização de Software; Data-Oriented Design.
@@ -18,14 +18,16 @@ Localidade da Cache; Eletronic Design Automation; Physical Design; Otimização 
 
 \textAbstract{ 
 
+\todo{Corrigir abstract}
+
 Physical design tools must handle huge amounts of data in order to solve problems for circuits with millions of cells. 
 Traditionally, Electronic Design Automation (EDA) tools are implemented using Object-Oriented Design (OOD).
 However, using this paradigm may lead to overly complex objects that result in waste of cache memory space.
-This memory wasting harms cache locality exploration and, consequently, degrades software runtime. 
+This memory wasting harms  exploitation of locality by the cache                               , consequently, degrades software runtime. 
 This work proposes an efficient organization of the data for three different algorithms of Physical Design.
-For this data organizatio, this work apply Data-Oriented Design.
+For this data organization, this work apply Data-Oriented Design.
 Differently from the traditional Object-Oriented design, the Data-Oriented Design programming model focus on how the data is organized in the memory.
-As consequence, this programming model may better explore cache spatial locality and reduce the total runtime.
+As a consequence, this programming model may better explore cache spatial locality and reduce the total runtime.
 In order to evaluate the impact of using the Data-Oriented Design programming model, we implemented two software prototypes (a sequential and a parallel implementation) of Physical Design algorithms for each programming model.
 Preliminary experimental results showed that the Data-Oriented Design implementation reduces the total number of cache misses and it is more faster than Object-Oriented Design implementation.
 
