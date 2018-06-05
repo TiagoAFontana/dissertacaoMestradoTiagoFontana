@@ -1,0 +1,86 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+% \usepackage{multirow}
+% \usepackage{graphicx}
+\begin{table}[h!b]
+\centering
+\caption{Caracterização da Síntese Física}
+\label{tab:caracteristicasSinteseFisica}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}lll@{}}
+\toprule
+Etapa                                                                                  & Algoritmo / Técnica            & Estrutura de Dados / Método      \\ \midrule
+\multirow{2}{*}{Particionamento}                                                       & Kernighan-Lin (KL)             & Grafo                            \\
+                                                                                       & Fiduccia-Mattheyses (FM)       & Grafo                            \\ \midrule
+\multirow{2}{*}{Planejamento Topológico}                                               & Simulated Annealing (SA)       & Elementar                        \\
+                                                                                       & Concentric Circles             & Elementar                        \\ \midrule
+\multirow{3}{*}{Posicionamento}                                                        & Posicionamento Analítico       & Programação Linear               \\
+                                                                                       & Simulated Annealing (SA)       & Elementar                        \\
+                                                                                       & Abacus                         & Programação Dinâmica             \\ \midrule
+\multirow{2}{*}{\begin{tabular}[c]{@{}l@{}}Timing / Power\\ Optimization\end{tabular}} & Static Timing Analysis (STA)   & Grafo                            \\
+                                                                                       & Gate Sizing                    & Grafo                            \\ \midrule
+\multirow{2}{*}{Clock Tree Synthesis}                                                  & Deferred-Merge Embedding (DME) & Elementar                        \\
+                                                                                       & K-means                        & Elementar                        \\ \midrule
+\multirow{2}{*}{Roteamento}                                                            & A*                             & Grafo                            \\
+                                                                                       & Sidewinder                     & Programação Linear Inteira (ILP) \\ \bottomrule
+\end{tabular}%
+}
+\end{table}
+
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+% \usepackage{graphicx}
+% \begin{table}[]
+% \centering
+% \caption{Caracterização da Síntese Física}
+% \label{tab:caracteristicasSinteseFisica}
+% \resizebox{\textwidth}{!}{%
+% \begin{tabular}{lll}
+% \hline
+% Etapa                                                                                  & Estratégia                     & Organização dos Dados            \\ \hline
+% \multirow{2}{*}{Particionamento}                                                       & Kernighan-Lin (KL)             & Grafo                            \\
+%                                                                                       & Fiduccia-Mattheyses (FM)       & Grafo                            \\ \hline
+% \multirow{2}{*}{Planejamento Topológico}                                               & Simulated Annealing (SA)       &                                  \\
+%                                                                                       & Concentric Circles             &                                  \\ \hline
+% \multirow{3}{*}{Posicionamento}                                                        & Posicionamento Analítico       & Programação Linear               \\
+%                                                                                       & Simulated Annealing (SA)       &                                  \\
+%                                                                                       & Abacus                         & Programação Dinâmica             \\ \hline
+% \multirow{2}{*}{\begin{tabular}[c]{@{}l@{}}Timing~/~Power Optimization\end{tabular}} & Static Timing Analysis (STA)   & Grafo                            \\
+%                                                                                       & Gate Sizing                    & Grafo                            \\ \hline
+% \multirow{2}{*}{Clock Tree Synthesis}                                                  & Deferred-Merge Embedding (DME) &                                  \\
+%                                                                                       & K-means                        &                                  \\ \hline
+% \multirow{2}{*}{Roteamento}                                                            & A*                             & Grafo                            \\
+%                                                                                       & Sidewinder                     & Programação Linear Inteira (ILP) \\ \hline
+% \end{tabular}%
+% }
+% \end{table}
+
+
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+% \usepackage{multirow}
+% \usepackage{graphicx}
+% \begin{table}[]
+% \centering
+% \caption{My caption}
+% \label{my-label}
+% \resizebox{\textwidth}{!}{%
+% \begin{tabular}{@{}lll@{}}
+% \toprule
+% Etapa                                    & Estratégia                     & Organização dos Dados            \\ \midrule
+% \multirow{2}{*}{Particionamento}         & Kernighan-Lin (KL)             & Grafo                            \\
+%                                          & Fiduccia-Mattheyses (FM)       & Grafo                            \\ \midrule
+% \multirow{2}{*}{Planejamento Topológico} & Simulated Annealing (SA)       &                                  \\
+%                                          & Concentric Circles             &                                  \\ \midrule
+% \multirow{3}{*}{Posicionamento}          & Posicionamento Analítico       & Programação Linear               \\
+%                                          & Simulated Annealing (SA)       &                                  \\
+%                                          & Abacus                         & Programação Dinâmica             \\ \midrule
+% \multirow{2}{*}{Clock Tree Synthesis}    & Deferred-Merge Embedding (DME) &                                  \\
+%                                          & K-means                        &                                  \\ \midrule
+% \multirow{2}{*}{Roteamento}              & A*                             & Grafo                            \\
+%                                          & Sidewinder                     & Programação Linear Inteira (ILP) \\ \midrule
+% \multirow{2}{*}{Timing Closure}          & Static Timing Analysis (STA)   & Grafo                            \\
+%                                          & Gate Sizing                    & Grafo                            \\ \toprule
+% \end{tabular}%
+% }
+% \end{table}

@@ -20,15 +20,14 @@
             avaliação quantitativamente do desempenho causado pela modelagem dos dados em três tarefas da síntese física
             Resultados experimentais utilizando uma infraestrutura baseada em circuitos industriais,
 
-    \section{Metodologia}
-        Implementar versões de problemas
-        avaliar quantitativamente o número de cache misses
-        avaliar quantitativamente o tempo de execução
-        
-    \section{Limitações(escopo) deste trabalho}
-        somente 3 problemas avaliados
-        somente uma arquitetura de processador e cache
-        paralelização com um chunk único
+
+falar que ood é imprescindível no mundo atual de software
+however
+ood não organiza adequadamente os dados
+
+
+\chapter{Conceitos Fundamentais}
+
 
 \chapter{Trabalhos correlatos}
     trabalhos que exploram a localidade dos dados
@@ -36,7 +35,7 @@
     trabalhos que falam DOD?
     % Trabalhos que otimizem o K-means
 
-\chapter{Técnica Proposta}
+\chapter{EXPLORANDO A LOCALIDADE DOS DADOS EM PHYSICAL DESIGN AUTOMATION}
     apresentar modelo de memoria
     apresentar como cache miss funciona
     apresentar ood
@@ -44,6 +43,16 @@
     apresentar dod
     apresentar entity system
     Discutir como o DOD reduz o numero de cache misses
+    
+\section{caracterização de algoritmos de physical design}
+    este capitulo visa caracterizar e identificar quais algoritmos de physical design podem se beneficiar do uso do modelo de programação orientado a dados
+
+    \section{escolha dos algoritmos}      
+        apresentar o conjunto de características que foi identificado na seção anterior
+        discutir quais dessas características são benéficas no modelo DOD e quais destas não se aplica ao modelo DOD (ILP)
+        apresentar quais problemas este trabalho irá avaliar
+
+    \section{DOD em algoritmos de Physical Design}
     como aplicar o dod em problemas
         Problema A - limites do chip
             como seria modelado OOD
@@ -54,3 +63,53 @@
         Problema C - cluster
             como seria modelado OOD
             como seria modelado DOD
+        Problema D - roteamento das nets
+            como seria modelado OOD
+            como seria modelado DOD
+
+
+\chapter{Resultados Experimentais}
+    \section{infraestrutura e configuração experimental}
+        \subsection{arquitetura zeus}
+        \subsection{implementação e compilação}
+            implementação em C++
+            gcc 5.4.0
+            flags: -O3 -ftree-vectorize -fopenmp
+            
+        \subsection{escolha de ferramenta para medições}
+            PAPI (http://icl.cs.utk.edu/papi/)
+                executa na máquina hospedeira
+                somente arquitetura da maquina hospedeira
+                utiliza hardware counters
+                possibilita medr L1, L2 e L3 (instruções e dados)
+                
+            Valgrind - cachegrind (http://valgrind.org/)
+                simula arquitetura (simulates how your program interacts with a machine's cache hierarch)
+                possibilita diversas arquiteturas
+                somente medições na L1 e Last Level
+                
+            Perf (https://www.gnu.org/software/gperf/)
+                executa na máquina hospedeira
+                somente arquitetura da maquina hospedeira
+                utiliza hardware counters
+                somente medições na L1 e Last Level
+                
+            Intel VTune (https://software.intel.com/en-us/intel-vtune-amplifier-xe)
+                pago
+                precisa compilar o código com ICC
+    
+    \section{resultados problema A}
+    \section{resultados problema B}
+    \section{resultados problema C}
+    \section{resultados problema D}
+
+\chapter{Conclusões e Trabalhos Futuros}
+
+
+
+
+    \section{Limitações(escopo) deste trabalho}
+        número de problemas limitados
+        sem análise de programação dinâmica
+        somente uma arquitetura de processador e cache
+        paralelização com um chunk único

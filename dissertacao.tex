@@ -15,7 +15,6 @@
 \usepackage{booktabs}
 \usepackage{multirow}
 \usepackage{graphicx}
-\usepackage[ruled]{algorithm2e}
 \usepackage[table,xcdraw]{xcolor}
 \usepackage{lipsum}
 \usepackage{amsmath}
@@ -33,11 +32,61 @@
 \usepackage{booktabs}
 \usepackage{lscape}
 \usepackage{pdfpages} %para inclusão do artigo no apêndice
+\usepackage{dblfloatfix}    % To enable figures at the bottom of page
+\usepackage[lined,boxed,ruled,commentsnumbered,portuguese]{algorithm2e}
+\usepackage{listings} %para inclusão do código fonte no apêndice
+\usepackage{mathtools}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\usepackage{amstext}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+% \usepackage{verbatim} % comment
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Comandos usados especificamente para este documento
 % Definidos pelo AUTOR
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand\todo[1]{\textcolor{red}{TODO: #1}}
+% \newcommand\comment[1]{}{\begin{comment} #1 \end{comment}}
+
+
+\newcommand{\nosemic}{\renewcommand{\@endalgocfline}{\relax}}% Drop semi-colon ;
+\newcommand{\dosemic}{\renewcommand{\@endalgocfline}{\algocf@endline}}% Reinstate semi-colon ;
+\newcommand{\pushline}{\Indp}% Indent
+\newcommand{\popline}{\Indm\dosemic}% Undent
+\let\oldnl\nl% Store \nl in \oldnl
+\newcommand{\nonl}{\renewcommand{\nl}{\let\nl\oldnl}}% Remove line number for one line
+
+% \SetKwComment{Comment}{$\triangleright$\ }{}
+\SetKwComment{Comment}{$//$\ }{}
+
+\lstset{
+	language = C++, % Linguagem de programação
+	basicstyle = \footnotesize, % Tamanho da fonte do código
+	numbers = left, % Posição da numeração das linhas
+	numberstyle = \tiny\color{blue}, % Estilo da numeração de linhas
+	stepnumber = 1, % Numeração das linhas ocorre a cada quantas linhas?
+	numbersep = 10pt, % Distância entre a numeração das linhas e o código
+	backgroundcolor = \color{white}, % Cor de fundo
+	showspaces = false, % Exibe espaços com um sublinhado
+	showstringspaces = false, % Sublinha espaços em Strings
+	showtabs = false, % Exibe tabulação com um sublinhado
+	frame = trBL, % Envolve o código com uma moldura, pode ser single ou trBL
+	rulecolor = \color{black}, % Cor da moldura
+	tabsize = 2, % Configura tabulação em x espaços
+	captionpos = b, % Posição do título pode ser t (top) ou b (bottom)
+	breaklines = true, % Configura quebra de linha automática
+	breakatwhitespace= false, % Configura quebra de linha
+	title = \lstname, % Exibe o nome do arquivo incluido
+	%caption = \lstname, % Também é possível usar caption no lugar de title
+	keywordstyle = \color{blue}, % Estilo das palavras chaves
+	commentstyle = \color{dkgreen}, % Estilo dos Comentários
+	stringstyle = \color{mauve}, % Estilo de Strings
+	escapeinside = {\%*}{*)}, % Permite adicionar comandos LaTeX dentro do seu código
+	morekeywords     ={*,...} % Se quiser adicionar mais palavras-chave
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -50,14 +99,16 @@
 % Identificadores do trabalho
 % Usados para preencher os elementos pré-textuais
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\titulo{Avaliação quantitativa do impacto da organização dos dados no contexto de Physical Design}
+% \titulo{Avaliação quantitativa do impacto da organização dos dados no contexto de Physical Design}
+\titulo{Avaliação quantitativa do impacto da organização dos dados na execução de programas: estudos de caso no contexto da Síntese Física}
+
 %\subtitulo{Estilo \LaTeX~ padrăo}                % Subtitulo do trabalho (opcional)
 \autor{Tiago Augusto Fontana}                     % Nome do autor
-\data{}{Novembro}{2017}                           % Data da publicaçăo do trabalho
+\data{}{Julho}{2018}                           % Data da publicaçăo do trabalho
 
 \orientador{Prof.\ Dr.\ José\ Luís\ Almada\ Güntzel} % Nome do orientador e (opcional) seu título
 %\coorientador{Prof. Dr. Beltrano}                % Nome do coorientador e seu título (opcional)
-%\coordenador{Prof. Chefe, Dr. Eng.}              % Nome do coordenador do curso e (opcional) seu título
+\coordenador{Prof.\ Dr.\ José\ Luís\ Almada\ Güntzel}              % Nome do coordenador do curso e (opcional) seu título
 
 \departamento{Programa de Pós-Graduação em Ciência da Computação}
 \curso{Programa de Pós-Graduação em Ciência da Computação}
@@ -67,30 +118,36 @@
 
 
 %%% Sobre a Banca
-\numerodemembrosnabanca{3} % Isso decide se haverá uma folha adicional
+\numerodemembrosnabanca{5} % Isso decide se haverá uma folha adicional
 \orientadornabanca{sim} % Se faz parte da banca definir como sim
 %\coorientadornabanca{sim} % Se faz parte da banca definir como sim
-\bancaMembroA{Dr.\ José\ Luis\ Almada\ Güntzel} %Nome do presidente da banca
-\bancaMembroB{Dr.\ }      % Nome do membro da Banca
-\bancaMembroC{Dr.\ }       % Nome do membro da Banca
-% \bancaMembroD{Dr.\ }     % Nome do membro da Banca
+\bancaMembroA[Universidade Federal do Rio Grande do Sul]{Prof.\ Dr.\ Marcelo de Oliveira Johann} %Nome do presidente da banca
+\bancaMembroB[Universidade Federal de Santa Catarina]{Prof.\ Dr.\ Cristina Meinhardt}      % Nome do membro da Banca
+\bancaMembroC[Universidade Federal de Santa Catarina]{Prof.\ Dr.\ Márcio Bastos Castro}       % Nome do membro da Banca
+\bancaMembroD[Universidade Federal de Santa Catarina]{Prof.\ Dr.\ Luiz Claudio Villar dos Santos}       % Nome do membro da Banca
 %\bancaMembroE{Prof. quinto membro}       % Nome do membro da Banca
 %\bancaMembroF{Prof. sexto membro}        % Nome do membro da Banca
 %\bancaMembroG{Prof. sétimo membro}       % Nome do membro da Banca
 
-\dedicatoria{A quem o trabalho é dedicado, se é que o é (opcional)}
+\dedicatoria{À minha família.}
 
-\agradecimento{Agradeço ao meu orientador José Luís Almada Güntzel, por todo o auxílio oferecido
-na execução deste trabalho e na escrita deste texto. \\
-Agradeço aos membros da banca, por cederem seu tempo para a avaliação deste trabalho. \\
-% Agradeço aos meus colegas de trabalho Vinicius dos Santos Livramento e Chrystian de Sousa Guth,
-% pela ajuda durante a realização deste trabalho. \\
-% Agradeço à minha namorada Taciane Martimiano, por me acompanhar nestes dois anos de mestrado. \\
-% Por fim, agradeço à minha família Carlos Alberto Barbosa Netto, Loreni Oliveira Netto e Caio Oliveira Netto,
-% por todo apoio e dedicação oferecidos até hoje, pois sem eles, nada disso seria possível.
+\agradecimento{
+Agradeço a meus pais Marli Dileta Secco Fontana (\textit{in memoriam}) e Waldir Fontana, por todo amor, dedicação e apoio oferecidos até hoje, pois sem eles, nada disso teria acontecido.
+
+Agradeço à minha namorada Thayrine Louise da Silva, por me acompanhar e apoiar nestes dois anos de mestrado. 
+
+Agradeço ao meu orientador José Luís Almada Güntzel, por todo o auxílio oferecido na execução deste trabalho e na escrita deste texto. 
+
+Agradeço aos membros da banca, por cederem seu tempo para a avaliação deste trabalho. 
+
+Por fim, agradeço aos colegas do ECL que de alguma forma participaram deste trabalho. Em particular aos colegas Renan Oliveira Netto e Sheiny Fabre Almeida, pela ajuda direta na realização deste trabalho. 
 }
 
-\epigrafe{Um bonito pensamento ou citaçăo, se for o caso}{autor do pensamento}
+% \epigrafe{Um bonito pensamento ou citaçăo, se for o caso}{autor do pensamento}
+\epigrafe{Alguns homens vêem as coisas como são, e dizem ‘Por quê?’ Eu sonho com as coisas que nunca foram e digo ‘Por que não?'}{Geroge Bernard Shaw}
+% “Aqueles que se sentem satisfeitos sentam-se e nada fazem. Os insatisfeitos são os únicos benfeitores do mundo.” (Walter S. Landor)
+% “A menos que modifiquemos a nossa maneira de pensar, não seremos capazes de resolver os problemas causados pela forma como nos acostumamos a ver o mundo”. (Albert Einstein)
+% "A experiência é o nome que damos aos nossos erros." (Oscar Wilde)
 
 % \textoResumo{ }
 
@@ -108,13 +165,14 @@ Agradeço aos membros da banca, por cederem seu tempo para a avaliação deste t
 %--------------------------------------------------------
 % Elementos pré-textuais
 \capa
-%\folhaderosto[comficha] % Se nao quiser imprimir a ficha, é só năo usar o parâmetro
-\folhaderosto% Se nao quiser imprimir a ficha, é só năo usar o parâmetro
+\folhaderosto[] %\folhaderosto[comficha] % Se nao quiser imprimir a ficha, é só năo usar o parâmetro
+% \folhaderosto% Se nao quiser imprimir a ficha, é só năo usar o parâmetro
 % \includepdf[pages={1}]{capitulos/ficha_catalografica.pdf}
-% \includepdf{capitulos/aprovacao.pdf}
-%\paginadedicatoria
-%\paginaagradecimento
-%\paginaepigrafe
+\includepdf{capitulos/aprovacao.pdf}
+% \folhaaprovacao
+\paginadedicatoria
+\paginaagradecimento
+\paginaepigrafe
 \input{init/resumo}
 \paginaresumo
 \paginaabstract
@@ -125,6 +183,7 @@ Agradeço aos membros da banca, por cederem seu tempo para a avaliação deste t
 \end{singlespacing}
 % \listadeabreviaturas
 \listadesimbolos
+\listofalgorithms
 \sumario
 
 %-------------------------------------------------------------------------------
@@ -139,19 +198,26 @@ Agradeço aos membros da banca, por cederem seu tempo para a avaliação deste t
 
 
 
-\input{capitulos/introducao}
+\input{capitulos/1_introducao}
     % contextualização     do     problema;
     % objetivos;
     % metodologia;
     % contribuições;
-\input{capitulos/trabalhos_correlatos}
+\input{capitulos/2_conceitos_fundamentais.tex}
+
+\input{capitulos/3_trabalhos_correlatos}
     % revisão bibliográfica;
-\input{capitulos/tecnica_proposta}
+\input{capitulos/4_tecnica_proposta}
     % proposta;
-\input{capitulos/resultados_experimentais}
+
+\input{capitulos/5_caracterizacao_sintese_fisica}
 
 
-\input{capitulos/cronograma}
+\input{capitulos/6_resultados_experimentais}
+
+\input{capitulos/7_conclusao_e_trabalhos_futuros}
+
+% \input{capitulos/cronograma}
     % cronograma de desenvolvimento das atividades previstas, incluindo provável mês e ano da defesa;
 
 

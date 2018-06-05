@@ -1,0 +1,37 @@
+% !TEX root = ../dissertacao.tex
+% \acresetall{}
+
+\chapter{Conclusões e Trabalhos Futuros}
+\label{cap:conclusao_e_trabalhos_futuros}
+
+% revisar um pouco sobre programação
+    
+% falar da organização proposta (entity component system)
+% falar dos benefícios da organização (resultados)
+%     falar do ordenamento que melhorou o caso 2
+%       vetorizou o código
+%       facilitou a paralelização
+
+% trabalhos futuros   
+%     analisar um estudo de caso com programação dinâmica (abacus).
+
+Este trabalho caracterizou as etapas da síntese física e elegeu um subconjunto destas para representarem as principais características da organização dos dados/métodos.
+Este trabalho propôs a utilização do modelo de \ac{dod} para este subconjunto e realizou comparações com o modelo tradicional \ac{ood}.
+Para auxiliar no acesso aos dados modelados com \ac{dod} foi utilizado o padrão de projeto \textit{Entity-Component System}.
+Este padrão foi estendido para suportar o agrupamento de propriedades que possuam relações de composição e agregação.
+
+A avaliação quantitativa do número de \textit{cache misses}, para cada estudo de caso, mostrou que o modelo \ac{dod} explorou a localidade espacial fornecida pela memória cache, reduzindo este número significativamente.
+Esta redução foi muito expressiva (obtendo até $99\%$ de redução) para tarefas em que poucos atributos/propriedades são necessários e a ordem do acesso a estes não é relevante, como por exemplo no estudo de caso 1.
+No cenário em que mais atributos/propriedades são necessários sem importar a ordem de acesso, estudo de caso 3, a redução no número de cache misses foi insignificativa no cenário sequencial.
+Contudo, no mesmo cenário, com execução paralela         a redução atingiu cerca de $30\%$.
+Já no cenário com mais atributos/propriedades e no qual a ordem do acesso aos dados é relevante, o modelo \ac{dod}, com agrupamento de propriedades, atingiu uma redução de $85\%$ na execução sequencial e $90\%$ na execução paralela (estudo de caso 2).
+Para o estudo de caso 4, representando tarefas sobre grafos, a redução no número de cache misses foi de $52\%$ na execução sequencial.
+
+Estas reduções no número de cache misses impactaram no tempo total de execução das tarefas.
+O modelo \ac{dod} foi pelo menos tão rápido quanto o modelo \ac{ood}, sendo que executou mais rápido na maioria dos estudos de caso.
+Este modelo permitiu também que ao compilador gerar um número maior de instruções vetoriais.
+Assim, este trabalho constatou que modelar os dados pertencentes a síntese física pode reduzir o tempo total necessário para o desenvolvimento de um \ac{ic}.
+
+Como trabalhos futuros é preciso avaliar algoritmos que utilizem programação dinâmica.
+Isso garantiria uma maior completude na representatividade das características presentes na síntese física.
+Um algoritmo possível para esta análise é o Abacus~\cite{spindler2008abacus} pertencente a etapa de legalização.

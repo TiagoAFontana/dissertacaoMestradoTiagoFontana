@@ -798,16 +798,7 @@
 
 {\setlength{\parindent}{0cm} \bfseries Banca Examinadora:\par}
 
-\ABNTifnotempty{\bancanameA}
-    {
-    \begin{espacosimples}
-	\vspace{0.9em}
-	\begin{center}
-	{\rule{\ABNTsignwidth}{1pt}\par
-	 \bancaformat \bancanameA \\ \bancadataA\par}
-	\end{center}
-    \end{espacosimples}
-    }
+
 
 \ABNTifnotempty{\ABNTorientadordata}
     {
@@ -817,7 +808,7 @@
 	    \vspace{0.5em}
 	    \begin{center}
 	    {\rule{\ABNTsignwidth}{1pt}\par
-	     \bancaformat \ABNTorientadorname \\ \ABNTorientadordata\par}
+	     \bancaformat \ABNTorientadorname \\ \ABNTorientadordata \\ Orientador\par}
 	    \end{center}
 	\end{espacosimples}
 	}{}
@@ -834,6 +825,17 @@
 	    \end{center}
 	\end{espacosimples}
 	}{}
+    }
+
+\ABNTifnotempty{\bancanameA}
+    {
+    \begin{espacosimples}
+	\vspace{0.9em}
+	\begin{center}
+	{\rule{\ABNTsignwidth}{1pt}\par
+	 \bancaformat \bancanameA \\ \bancadataA\par}
+	\end{center}
+    \end{espacosimples}
     }
 
 \ABNTifnotempty{\bancanameB}

@@ -1,0 +1,186 @@
+% !TEX root = ../dissertacao.tex
+\chapter{Physical Design como estudo de caso}
+\label{cap:caracterizacaoSinteseFisica}
+
+% este capitulo visa caracterizar e identificar quais algoritmos de physical design podem se beneficiar do uso do modelo de programação orientado a dados
+
+%     \section{escolha dos algoritmos}      
+%         apresentar o conjunto de características que foi identificado na seção anterior
+%         discutir quais dessas características são benéficas no modelo DOD e quais destas não se aplica ao modelo DOD (ILP)
+%         apresentar quais problemas este trabalho irá avaliar
+
+%     \section{DOD em algoritmos de Physical Design}
+%     como aplicar o dod em problemas
+%         Problema A - limites do chip
+%             como seria modelado OOD
+%             como seria modelado DOD
+%         Problema B - interconexão
+%             como seria modelado OOD
+%             como seria modelado DOD
+%         Problema C - cluster
+%             como seria modelado OOD
+%             como seria modelado DOD
+%         Problema D - roteamento das nets
+%             como seria modelado OOD
+%             como seria modelado DOD
+
+Este capítulo caracteriza os algoritmos presentes na etapa de síntese física do fluxo de projeto de \acp{ic} contemporâneos, enfocando a organização dos dados de cada algoritmo.
+% Com estas características, será possível eleger um subconjunto de algorítmos que representam a síntese física.
+A Figura~\ref{fig:exemplo_fluxo_com_algoritmos} apresenta o fluxo de projetos de um \ac{ic} com um maior detalhamento para a etapa de síntese física. 
+Para cada etapa pertencente da síntese física são explanados os principais algoritmos e técnicas de programação utilizados.
+Note que alguns algoritmos, como por exemplo Simulated Annealing (SA)~\cite{russell2009artificial}, são utilizados em diversas fases deste fluxo.
+
+\begin{figure}[!b]
+    \centering
+    \includegraphics[width=\textwidth]{img/caracterizacao/exemplo_fluxo_com_algoritmos.pdf}
+    \caption[Etapas da síntese física]{Etapas da síntese física com seus respectivos algoritmos/técnicas. Figura adaptada de~\citeonline{kahng2011vlsi}.}
+    \label{fig:exemplo_fluxo_com_algoritmos}
+\end{figure}
+
+O Particionamento é a primeira etapa da síntese física e tem como objetivo dividir o \ac{ic} em sub-circuitos para minimizar o número de interconexões entre estas partições \cite{kahng2011vlsi}. Para resolver este problema de particionamento, existem dois algoritmos clássicos: Kernighan-Lin (KL)~\cite{kernighan1970efficient} e Fiduccia-Mattheyses (FM) \cite{fiduccia1988linear}.
+
+% O algoritmo KL opera sobre uma representação do circuito modelada através de um grafo $G(V, E)$. Os nodos $e \in E$ deste grafo representam as células do circuito, enquanto, as arestas $v \in V$ modelam as conexões entre as células. Dado este grafo $G$, cujo $|V| = 2n$ e cada aresta $v$ possui o mesmo peso, o algoritmo KL particiona o conjunto de nodos $V$ em dois conjuntos disjuntos ($A$ e $B$) de mesmo tamanho, isto é, $|A| = |B| = n$.
+% Para realizar este particionamento, o algoritmo KL realiza a troca de dois nodos $e_1 \in A$ e $e_2 \in B$ entre as partições com objetivo de minimizar o número de arestas intersectadas pelas partições. Após esta troca, os nodos ($e_1$ e $e_2$) são fixados para prevenir movimentos reversos.
+
+% O algoritmo FM também opera sobre uma modelagem do circuito representada em grafo. Este algoritmo oferece melhorias significativas perante o algoritmo KL. Nele, as células podem ser movidas independentes entre as partições, o que facilita o particionamento de conjuntos de tamanhos distintos. O algoritmo FM utiliza a área da célula no cálculo do peso das arestas do grafo. Esta consideração leva a mover primeiro as células com menor área e visa reduzir a perturbação gerada pelo particionamento. A complexidade do algoritmo FM é $\mathcal{O}(|Pins|)$.
+
+Os dois algoritmos (KL e FM) representam o circuito através de um grafo $G(V, E)$ , onde os nodos $v \in V$ representam as células e as arestas $e \in E$ modelam as conexões entre as células. Dado este grafo $G$, cujo $|V| = 2n$ e cada aresta $e$ possui o mesmo peso, o algoritmo KL particiona o conjunto de nodos $V$ em dois conjuntos disjuntos ($A$ e $B$) de mesmo tamanho, isto é, $|A| = |B| = n$.
+Para realizar este particionamento, o algoritmo KL realiza a troca de dois nodos $v_1 \in A$ e $v_2 \in B$ entre as partições com objetivo de minimizar o número de arestas intersectadas pelas partições. Após esta troca, os nodos ($v_1$ e $v_2$) são fixados para prevenir movimentos reversos.
+O algoritmo FM oferece melhorias significativas perante o algoritmo KL. Nele, uma única  célula pode ser movida entre as partições, o que facilita o particionamento de conjuntos de tamanhos distintos ($|A| \neq |B|$).
+O algoritmo FM utiliza a área da célula no cálculo do peso das arestas do grafo. Esta consideração leva a mover primeiro as células com menor área e visa reduzir a perturbação gerada pelo particionamento. 
+A complexidade do algoritmo FM é $\mathcal{O}(n)$, onde $n = |V|$, ao passo que, a complexidade do algoritmo KL é $\mathcal{O}(n^2~log~n)$, onde $n = |V|$.
+
+
+Na etapa de planejamento topológico são definidas as localizações e formas dos módulos pertencentes ao circuito.
+Com estas, é possível realizar estimativas precoces do tamanho das interconexões (\textit{wirelength}) e atraso. 
+Esta análise inicial permite identificar quais blocos precisam de maior otimização nas etapas posteriores do fluxo de projeto de um \ac{ic}. 
+A etapa de planejamento topológico é tipicamente dividida em três subetapas, que são elas: \textit{floorplanning}, \textit{pin assignment} e \textit{power planning}.
+A subetapa de \textit{floorplanning} determina as localizações e dimensões, com base nas áreas e relações dos módulos, de modo a otimizar o tamanho do chip, reduzir as interconexões e melhorar a temporização do circuito. Para isso esta etapa avalia diferentes posicionamentos dos módulos pertencentes ao circuito.
+O resultado final desta etapa pode ser observado na Figura~\ref{subfig:resultadofloorplan} onde a área total do \textit{chip} foi minimizada e possui $35$ unidades.
+Um possível algoritmo para esta etapa é o Simulated Annealing (SA)~\cite{russell2009artificial}.
+
+O algoritmo SA é iterativo - inicia com uma solução inicial ($s_i$) e busca incrementalmente melhorar a função objetivo $F$.
+A cada iteração soluções vizinhas ($S_v$) são consideradas.
+Estas soluções vizinhas são obtidas com uma pequena perturbação na solução atual ($S_v = s_a \pm \alpha$).
+Para cada $s \in S_v$, se $s$ for melhor que a solução atual ($F(s) < F(s_a)$ assumindo um objetivo de minimização da função objetivo $F$) esta solução é tomada como solução atual ($s_a = s$).
+Senão, existe uma probabilidade $t$ (temperatura) da solução $s$ ser tomada como solução atual. Esta probabilidade $t$ é reduzida a medida que o algoritmo executa, de forma que o mesmo sempre possui convergência para uma solução ótima local.
+% Se esta probabilidade fosse infinitamente reduzida o algoritmo sempre encontraria o ótimo global, porém, isso não é verdade na prática.
+
+\begin{figure}[h!t]
+    \centering
+    \subfigure[]{\includegraphics[width=0.3\textwidth]{img/caracterizacao/floorplan/floorplan.pdf} \label{subfig:resultadofloorplan}}
+    \subfigure[]{\includegraphics[width=0.3\textwidth]{img/caracterizacao/floorplan/pin_assignment.pdf} \label{subfig:resultadopinAssignment}}
+    \subfigure[]{\includegraphics[width=0.32\textwidth]{img/caracterizacao/floorplan/power_planning.pdf} \label{subfig:resultadopowerPlanning}}
+    
+    \caption{Etapas do planejamento topológico. Retirado de \citeonline{kahng2011vlsi}.}
+    \label{fig:etapasPlanejamentoTopologico}
+\end{figure}
+
+A subetapa de \textit{pin assignment} conecta as redes de sinais de saída do \ac{ic} com os pinos pertencentes aos blocos internos ao \ac{ic}.
+O resultado final desta etapa pode ser observado na Figura~\ref{subfig:resultadopinAssignment}, sendo um dos principais algoritmos para esta etapa é o Concentric Circles \cite{koren1972pin, brady1984approach}.
+A Figura~\ref{fig:concentricCircles} apresenta as principais etapas deste algoritmo.
+Este algoritmo assume que todos os pinos externos (pinos fora do bloco atual) possuem localizações fixas (representados pelos círculos em verde na Figura~\ref{subfig:concentricCircles::a}). 
+O algoritmo utiliza dois círculos concêntricos - o círculo interno mapeia os pinos do bloco atual (fontes dos sinais) enquanto, o círculo externo mapeia os pinos dos demais blocos conectados a este (destinos dos sinais).
+Para cada pino é traçado uma linha do centro do círculo até sua posição, e sua posição é projetada para o respectivo círculo.
+Este mapeamento pode ser observado pelos pontos em vermelho na Figura~\ref{subfig:concentricCircles::c}.
+O mapeamento inicial é determinado por dado um pino fonte e um destino, interconecta-se estes pinos (linha trastejada da Figura~\ref{subfig:concentricCircles::d2}) e mapeia-se os demais pinos no sentido horário.
+O mapeamento de todos os pinos pode ser observado na Figura~\ref{subfig:concentricCircles::g}.
+Este processo é repetido para cada combinação de fonte/destino, sendo o melhor mapeamento determinado pela menor distância Euclidiana entre todos os fontes/destinos.
+Neste exemplo o melhor mapeamento para os pinos é o demonstrado pela Figura~\ref{subfig:concentricCircles::e}.
+Após determinar o mapeamento este algoritmo conecta os pinos do bloco atual (fontes dos sinais) com os pinos dos demais blocos conectados a este (destinos dos sinais), Este passo é ilustrado pela Figura~\ref{subfig:concentricCircles::f}.
+
+\begin{figure}[h!t]
+    \centering
+    \subfigure[]{\includegraphics[width=0.3\textwidth]{img/caracterizacao/concentricCircles/a.pdf} \label{subfig:concentricCircles::a}}
+    % \subfigure[]{\includegraphics[width=0.32\textwidth]{img/caracterizacao/concentricCircles/b.pdf} \label{subfig:concentricCircles::b}}
+    \subfigure[]{\includegraphics[width=0.3\textwidth]{img/caracterizacao/concentricCircles/c.pdf} \label{subfig:concentricCircles::c}}
+    \subfigure[]{\includegraphics[width=0.3\textwidth]{img/caracterizacao/concentricCircles/d2.pdf} \label{subfig:concentricCircles::d2}}
+    
+    \subfigure[]{\includegraphics[width=0.3\textwidth]{img/caracterizacao/concentricCircles/g.pdf} \label{subfig:concentricCircles::g}}
+    \subfigure[]{\includegraphics[width=0.3\textwidth]{img/caracterizacao/concentricCircles/e.pdf} \label{subfig:concentricCircles::e}}
+    \subfigure[]{\includegraphics[width=0.3\textwidth]{img/caracterizacao/concentricCircles/f.pdf} \label{subfig:concentricCircles::f}}
+    \caption[Ilustração algoritmo \textit{Concentric Circles}]{Exemplo da execução do algoritmo \textit{Concentric Circles}. Adaptado de \citeonline{kahng2011vlsi}.}
+    \label{fig:concentricCircles}
+\end{figure}
+
+Na subetapa de \textit{power planning} constrói-se a rede de fornecimento de energia, isto é, redes de \textit{VDD} e \textit{ground}, de modo a assegurar que cada bloco é fornecido com a tensão de alimentação apropriada. A Figura~\ref{subfig:resultadopowerPlanning} apresenta o resultado desta etapa.
+
+A etapa de posicionamento (\textit{placement}) é responsável por encontrar as posições e orientações de todos os elementos do circuito numa superfície planar.
+Este posicionamento deve respeitar uma série de restrições (as células não podem se sobrepor uma as outras; todas as células devem estar alinhadas com as linhas e colunas do circuito; as células devem respeitar a linha de alimentação, sendo rotacionada quando necessário) e minimizar uma gama de objetivos (comprimento das interconexões, densidade do circuito).
+Esta etapa de posicionamento é dividida em três subetapas: posicionamento global, legalização e posicionamento detalhado.
+O posicionamento global negligencia algumas restrições (sobreposição e alinhamento das células) para simplificar o problema de posicionamento.
+O principal objetivo nesta etapa é a redução das interconexões, mantendo a distribuição da densidade pelo circuito.
+Para encontrar o local ideal de cada célula no circuito, utiliza-se técnicas analíticas para minimizar a função objetivo~\cite{tsay1988proud, eisenmann1998generic, Lin2013Polar}.
+Outra técnica clássica de posicionamento global é baseada no algoritmo Simulated Annealing (SA). 
+
+Como as técnicas de posicionamento global negligenciam algumas métricas, a etapa subsequente, denominada legalização, tem como propósito remover as sobreposições geradas pela etapa anterior.
+Esta etapa também corrige as demais restrições impostas pela tecnologia, como por exemplo: alinhamento das células com a grade de alimentação, linhas e colunas do circuito.
+Existem diversos algoritmos para a legalização de \acp{ic}, dentre eles um dos mais clássicos é o Abacus~\cite{spindler2008abacus}.
+Abacus é um algoritmo de programação dinâmica que legaliza as células do circuito uma de cada vez, posicionando-as nas linhas que minimizam seu deslocamento com relação às posições encontradas pelo posicionamento global.
+
+A etapa de legalização pode perturbar a solução encontrada pelo posicionamento global. Então, após a legalização é aplicada uma etapa de posicionamento detalhado.
+Esta etapa reposiciona algumas células do circuito, otimizando métricas específicas, como por exemplo: atraso do circuito e densidade das células.
+Para esta etapa são utilizados algoritmos iterativos que incrementalmente refinam o posicionamento das células críticas do circuito.
+
+Com todas as células do circuitos posicionadas e legalizadas a etapa de \ac{cts} irá clusterizar elementos síncronos pertencentes ao mesmo sinal de relógio e planejar a rede de relógio do \ac{ic}.
+Um dos algoritmos clássicos para o agrupamento de elementos pertencentes a mesma rede de relógio é denominado K-\textit{means}~\cite{selim1984k}.
+O algoritmo inicia criando $k$ \textit{clusters} com centros aleatórios. Em seguida, na etapa de assinalamento, todos os elementos síncronos são assinalados para o \textit{cluster} mais próximo.
+Após assinalar todos os elementos, o centro do \textit{cluster} é alterado para o centro de massa dos elementos que o pertencem. Estas duas etapas são repetidas por um número fixo de vezes ou até que os centros dos \textit{clusters} convirjam.
+
+Para gerar a rede de relógio, dentre os algoritmos clássicos temos como exemplo o Deferred-Merge Embedding (DME)~\cite{boese1992zero}.
+Este algoritmo é baseado no conceito de divisão e conquista e em tempo linear constrói a topologia de conexão no plano de Manhattan para criar uma árvore de relógio com \textit{clock skew} zero, minimizando o comprimento de fio das interconexões de relógio.
+\textit{Clock Skew} é a máxima diferença no tempo de chegada (\textit{arrival time}) do sinal de relógio entre todos os elementos sequenciais. Se $t(u,v)$ representa o atraso na chegada do sinal de relógio entre os elementos sequenciais $u$ e $v$, o \textit{skew} de uma rede de relógio $T$ é calculado segundo a Equação \ref{eq.skew}.
+\begin{equation} \label{eq.skew}
+	 \displaystyle \operatorname{\textit{skew}(T)} = \max_{S_{i}, S_{j} \in S} | t(S_{0},S_{i})-t(S_{0},S_{j})|
+%	 \displaystyle \operatorname{\textit{skew}(T)} = \max_{i,j \in S} | at_i^L - at_j^L|
+\end{equation} 
+
+
+Durante a etapa de roteamento todas as interconexões de sinais (\textit{nets}) devem ser estabelecidas. 
+Esta etapa é subdividida em dois passos: 1) roteamento global; 2) roteamento detalhado.
+No roteamento global, o circuito é dividido numa grade em que cada área desta grade é denominada gcell.
+Cada gcell possui uma capacidade que representa o número de interconexões que podem ser roteadas nesta fração do circuito.
+O modelo utilizado para representar estas informações de forma computacional é um Grafo G(V, E), em que os vértices $v \in V$ representam as gcell e as arestas $(u, v) \in E$ representam a capacidade da gcell $u$ rotear um sinal para a gcell vizinha $v$.
+Então, para cada par de pinos interconectados são definidas as gcells em que a interconexão irá passar.
+Um algoritmo capaz de definir por quais gcells a interconexão passa é o $A*$~\cite{russell2009artificial}.
+Na etapa de roteamento detalhado, são definidas as trilhas de roteamento, vias e camadas de metais para cada segmento pertencente as interconexões do circuito.
+Estas definições devem respeitar todas as regras de projetos estabelecidas para uma dada tecnologia de fabricação~\cite{kahng2011vlsi}.
+Para isso, são definidas um conjunto de equações e estas são solucionadas por meio de \ac{ilp}.
+Entre os roteadores clássicos baseados em \ac{ilp} estão Sidewinder~\cite{hu2008sidewinder} e BoxRouter~\cite{cho2007boxrouter}.
+
+
+Durante todo o fluxo do \ac{ic}, a etapa de \textit{Timing/Power Optimization} é responsável por verificar se o circuito satisfaz as restrições de desempenho para uma frequência alvo de operação e aplicar otimizações incrementais.
+Nesta etapa, a \ac{sta})~\cite{srivastava2006statistical, chadha2009static} propaga os atrasos das células e interconexões para identificar os locais com violações temporais.
+Para isto, o circuito é modelado como um grafo G(V, E) em que os vértices $v \in V$ representam as células do circuito e as arestas $(u, v) \in E$ representam que a célula $u$ é interconectada com a célula $v$. 
+Após identificar as violações temporais diferentes heurísticas são aplicadas para solucionar estas violações.
+% Esta etapa é denominada \textit{Timing/Power Optimization} e possui dois grandes passos: \textit{Static Timing Analysis}~(STA)~\cite{srivastava2006statistical, chadha2009static} e \textit{Gate Sizing}.
+% A análise consiste em propagar os atrasos das células e interconexões para identificar os locais com violações temporais.
+% A etapa de \textit{Gate Sizing} é responsável por corrigir as violações temporais identificadas anteriormente.
+% Estas correções são realizadas com a alteração do tamanho das células (uma biblioteca standard-cell tipicamente fornece a  mesma célula com diferentes tamanhos que correspondem a diferentes \textit{drive strengths}~\footnote{\textit{Drive strengths} é a quantidade de corrente que uma célula pode fornecer em seu chaveamento.}), a inserção de \textit{buffers} e a reestruturação da \textit{netlist}.
+
+% sumarização da síntese física
+
+A Tabela~\ref{tab:caracteristicasSinteseFisica} sintetiza as características das etapas da síntese física descrevendo os algoritmos/técnicas e suas estruturas de dados/métodos.
+% Para cada etapa são descritos seus algoritmos e/ou técnicas bem como suas estruturas de dados e/ou métodos utilizados. 
+Note que que diversos algoritmos/técnicas utilizam estruturas de dados elementares, como por exemplo: arranjos, pilhas, filas, conjuntos, entre outras.
+Outra parcela destas etapas representa as informações do circuito por meio de um grafo.
+Também existem etapas que fazem uso de outros métodos de programação, tais como: Programação Linear e Programação Dinâmica.
+
+\input{capitulos/tabela_sintese_fisica.tex}
+
+Com isso é possível eleger um subconjunto de algoritmos/técnicas que representa as principais características do fluxo da síntese física de um \ac{ic}.
+Para este trabalho os seguintes algoritmos/técnicas foram escolhidos para fornecer uma grande representatividade da síntese física:
+\begin{itemize}
+    \itemsep0em
+    \item \textbf{Verificação dos limites do chip}: pertencente a etapa de legalização do posicionamento de um \ac{ic}. Este estudo de caso representa tarefas simples e com estruturas de dados elementares. Porém, estas são executadas inúmeras vezes durante o fluxo de projeto.
+    \item \textbf{Estimativa do comprimento de interconexões}: pertencente as etapas de posicionamento e \textit{timming/power optimization}. Esta tarefa depende de diversas informações 
+    tradicionalmente separadas em diversos módulos. Possui baixa intensidade aritmética e utiliza estrutura de dados elementares.
+    \item \textbf{Clusterização de registradores}: Pertencente a etapa de \textit{Clock Tree Synthesis}. Esta tarefa necessita de poucas informações e utiliza estruturas de dados elementares. Porém, realiza um alto número de operações aritméticas. 
+    \item \textbf{Roteamento de interconexões}: pertencente a etapa de roteamento do \ac{ic}. Esta tarefa opera sobre um grafo que representa o leiaute do circuito.
+\end{itemize}
+
+Não foram analisadas tarefas que utilizam Programação Linear pois grande parte do esforço concentra-se na solução de um sistema de equações matemáticas.
+Estas equações são resolvidas por meio de solucionadores matemáticos externos, os quais, possuem como entrada estruturas de dados previamente definidas.
+Isto, torna impossível aplicar outra organização (por exemplo \ac{dod}) nos dados internos destes solvedores.
+Com isso, alterar a organização dos dados numa pequena parcela da tarefa provavelmente não surtiria efeito sobre o contexto global da tarefa.
+Por limitação do escopo deste trabalho não foram analisadas tarefas que fazem uso de Programação Dinâmica.

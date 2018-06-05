@@ -27,17 +27,40 @@ A avaliação do impacto na exploração da localidade da cache utilizando Data-
 \item \textbf{Título:} \textit{Exploiting Cache Locality to Speedup Register Clustering}
 \item \textbf{Autores:}  \textbf{Tiago Augusto Fontana}; Sheiny Almeida; Renan Netto; Vinicius Livramento; Chrystian Guth;  Laércio Pilla; José Luís Güntzel
 \item \textbf{DOI:} http://dx.doi.org/10.1145/3109984.3110005
-\item \textbf{\textit{Abstract:}} \emph{Physical design tools must handle huge amounts of data in order to solve problems for circuits with millions of cells. Traditionally, Electronic Design Automation tools are implemented using Object-Oriented Design. However, using this paradigm may lead to overly complex objects that result in waste of cache memory space. This memory wasting harms cache locality exploration and, consequently, degrades software runtime. This work proposes applying Data-Oriented Design on the register clustering problem. Differently from the traditional Object-Oriented design, the Data-Oriented Design programming model focus on how the data is organized in the memory. As consequence, this programming model may better explore cache spatial locality. In order to evaluate the impact of using the Data-Oriented Design programming model for register clustering, we implemented two software prototypes (a sequential and a parallel implementation) of the K-means clustering algorithm for each programming model. Experimental results showed that the sequential Data-Oriented Design implementation is on average $7.5\%$ faster when compared to the Object-Oriented Design implementation, while its parallel version is $15\%$ faster when compared to the Object-Oriented one.}
+\item \textbf{\textit{Abstract:}} \emph{Physical design tools must handle huge amounts of data in order to solve problems for circuits with millions of cells. Traditionally, Electronic Design Automation tools are implemented using Object-Oriented Design. However, using this paradigm may lead to overly complex objects that result in waste of cache memory space. This memory wasting harms cache locality exploration and, consequently, degrades software runtime. This work proposes applying Data-Oriented Design on the register clustering problem. Differently from the traditional Object-Oriented design, the Data-Oriented Design programming model focus on how the data is organized in the memory. As consequence, this programming model may better explore cache spatial locality. In order to evaluate the impact of using the Data-Oriented Design programming model for register clustering, we implemented two software prototypes (a sequential and a parallel implementation) of the K-means clustering algorithm for each programming model. Experimental results showed that the sequential Data-Oriented Design implementation is on average 7.5\% faster when compared to the Object-Oriented Design implementation, while its parallel version is 15\% faster when compared to the Object-Oriented one.}
 \end{itemize}
 
 \section{Prêmios}
 \subsection{2017 CAD Contest (Problem C: Multi-Deck Standard Cell Legalization) @ ICCAD 2017}
 
-A modelagem dos dados proposta nesta dissertação foi utilizada para suportar a técnica de legalização submetida à competição ICCAD 2017 CAD Contest (problem C: Multi-Deck Standard Cell Legalization), a qual proporcionou à equipe do Embedded Computing Laboratory da UFSC ficar entre os três primeiros colocados.
-O resultado oficial será dibulgado na cerimônia de entrega de prêmios do ICCAD 2017,que realizar-se-á em 13 de novembro de 2017, na cidade de Irvine, Califórnia, EUA.
+A modelagem dos dados proposta nesta dissertação foi utilizada para suportar a técnica de legalização submetida à competição ICCAD 2017 CAD Contest (problem C: Multi-Deck Standard Cell Legalization), a qual proporcionou à equipe do Embedded Computing Lab. da UFSC ficar entre os três primeiros colocados.
+O resultado oficial foi divulgado na cerimônia de entrega de prêmios do ICCAD 2017, que realizou-se em 13 de novembro de 2017, na cidade de Irvine, Califórnia, EUA.
 
 \begin{itemize}
 \item \textbf{Equipe:} Ophidian (\texttt{cada001})
-\item \textbf{Membros:} Renan Netto, Tiago Augusto Fontana, Sheiny Fabre, Thiago Barbatto, Chrystian Guth, Prof. José Güntzel e Prof. Laercio Lima Pilla
+\item \textbf{Membros:} Renan Netto, \underline{Tiago Augusto Fontana}, Sheiny Fabre, Thiago Barbatto, Chrystian Guth, Prof. José Güntzel e Prof. Laercio Lima Pilla
 \item \textbf{Colocação:} $3^{\circ}$ Lugar
+\end{itemize}
+
+
+\section{Participação em outros trabalhos}
+
+Participação como coautor nos seguintes trabalhos:
+
+\subsection{Submissão para \textit{International Conference On Computer Aided Design} (ICCAD), 2018}
+
+\begin{itemize}
+    \item \textbf{Qualis CC 2016:} A1
+    \item \textbf{Título:} \textit{Towards Low Displacement Multi-Row Detailed Placement Through Iterative Quadratic Programming}
+    \item \textbf{Autores:}  Renan Netto, Thiago Barbatto, \underline{Tiago Augusto Fontana}, Sheiny Almeida, Vinicius Livramento, Laércio Pilla, José Luís Güntzel
+    \item \textbf{\textit{Abstract:}} \emph{The design of integrated circuits in advanced technology nodes must cope with a number of challenges such as pin accessibility, increasingly complex design rules, tight performance and power constraints, among others. The use of multi-row standard cells comes in handy to achieve low power and high performance, helping to deal with some of those challenges, but introduces a new challenge to legalization and detailed placement. Legalization and detailed placement must not only ensure circuit legality constraints (which is harder in the presence of multi-row cells), but also preserve the solution of previous optimization steps. Although a few techniques were proposed recently to solve multi-row cell legalization and detailed placement problems, they may perturb too much cell's placement and even fail to legalize circuits of moderate size. Therefore, new techniques are required to improve the results of such algorithms. We propose a detailed placement technique that relies on a quadratic programming model to simultaneously relocate all cells in a given area to reduce cell displacement. In addition, the proposed technique is able to handle circuits with multi-row cells of any height by slicing such cells. Experimental results using the ICCAD 2017 CAD Contest infrastructure show that the proposed algorithm successfully legalize all circuits with improvements of up to 12\% and 61\% on average and maximum displacement, respectively, with respect to the three contest winners, confirming its effectiveness.}
+\end{itemize}
+
+\subsection{Submissão para \textit{$31^{st}$ Symposium on Integrated Circuits and Systems Design} (SBCCI), 2018}
+
+\begin{itemize}
+    \item \textbf{Qualis CC 2016:} B2
+    \item \textbf{Título:} \textit{Enhancing Multi-Threaded Legalization Through \textit{k}-d Tree Circuit Partitioning}
+    \item \textbf{Autores:} Sheiny Fabre, Jose Luis Guntzel, Laércio Pilla, Renan Netto, \underline{Tiago Augusto Fontana} and Vinicius Livramento
+    \item \textbf{\textit{Abstract:}} \emph{The huge number of cells in a chip and the increasing complexity of design rules render physical synthesis a big challenge. While a legalization algorithm may move all circuit cells to fix overlaps and misalignments, it should cause the least perturbation possible to the solution found by the previous optimization steps to preserve placement quality. Modern design rules and challenges include mixed-cell-height, power rail alignment, pin accessibility and rectilinear fence regions. In this work we propose a \textit{k}-d tree data structure to partition the circuit, thus removing data dependency. Then, legalization is sped up through both input size reduction and parallel execution. As a use case we employed a modified version of the classic legalization algorithm Abacus. Our solution achieved a maximum speedup of 35 times over a sequential version of Abacus for the circuits of the ICCAD2015 CAD contest. It also provided up to 10\% reduction on the average cell displacement.}
 \end{itemize}
