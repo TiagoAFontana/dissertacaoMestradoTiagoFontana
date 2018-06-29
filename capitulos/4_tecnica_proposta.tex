@@ -4,9 +4,8 @@
 \label{cap:tecnica_proposta}
 
 Este capítulo apresenta a proposta de organização dos dados para melhorar o desempenho de algoritmos.
-Inicialmente serão discutidas as limitações do modelo de \ac{ood} e o de como o modelo de \ac{dod} pode sanar as mesmas.
-Então, na Seção~\ref{sec:entity_component_system}, será apresentado um padrão de projeto que segue o modelo \ac{dod} e otimiza a localidade espacial dos dados.
-Desta forma, este padrão de projetos otimiza os acessos a memória realizados pelas tarefas.
+Inicialmente, são discutidas as limitações do modelo \ac{ood} e o de como o modelo \ac{dod} pode sanar as mesmas.
+Então, na Seção~\ref{sec:entity_component_system} é apresentado um padrão de projeto que segue o modelo \ac{dod} e otimiza a localidade espacial dos dados, otimizando assim os acessos à memória realizados pelas tarefas.
 
 % A arquitetura de memória de computadores modernos é tipicamente hierárquica como mostrado na Figura~\ref{fig:memoryHierarchy}. Observe que os níveis mais baixos na hierarquia (por exemplo, disco rígido e memória principal) têm maior capacidade porém, possuem maior latência. Por outro lado, os níveis mais altos (por exemplo, memória cache e registradores da CPU) são rápidos, mas possuem capacidade limitada. Quando um determinado programa precisa um dado, e o mesmo não se encontra nos registradores da CPU, será realizada uma busca por este dado nos níveis mais altos da hierarquia da  cache. Quando os dados não são encontrados em algum dos níveis de cache, dizemos que ocorreu um \textbf{\textit{cache miss}}. Quando um \textit{cache miss} ocorre, os dados são acessados no nível inferior da hierarquia. No pior caso, este dado será recuperado do disco rígido e levado por todos os níveis da hierarquia. Quando o dado buscado é recuperado para a cache de mais alto nível e posteriormente armazenado num registrador da CPU, o programa que estava acessando os dados volta a executar. Caso esses dados forem necessários novamente, e o bloco da cache não tenha sido substituído, eles estarão disponível na cache e sua busca nos níveis da cache resultará em \textbf{\textit{cache hit}}~\cite{patterson2013computer}.
 
@@ -24,15 +23,15 @@ Desta forma, este padrão de projetos otimiza os acessos a memória realizados p
 
 Como revisado na Seção~\ref{sec:conceitosFundamentaisArquitetura}, a arquitetura de computadores modernos possui um hierarquia de memória.
 Esta hierarquia de memória possui algumas propriedades, sendo uma delas a localidade espacial.
-É possível explorar esta propriedade mudando a forma como os dados são organizados em um determinado software, até mesmo quando não se possui informação da arquitetura na qual este \textit{software} irá executar.
+É possível explorar esta propriedade mudando a forma como os dados são organizados em um determinado \textit{software}, até mesmo quando não se possui informação da arquitetura na qual este \textit{software} irá executar.
 Isto é possível, uma vez que, ao armazenar dados de uma mesma categoria de forma contígua estamos aumentando a probabilidade de um acesso gerar um \textit{cache hit}.
 
-Por exemplo, um algoritmo de Clusterização de Registradores executa operações em todas as posições dos registradores de um circuito.
-Ao armazenar todas as posições destes registradores em um único vetor contíguo, este algoritmo irá necessitar de um número inferior de \textit{cache misses} para recuperar todos os dados.
-Como consequência, o tempo de acesso aos dados é reduzido e o desempenho do software é melhorado. Esta organização de dados nem sempre é eficientemente feita pelo modelo de programação tradicional~\ac{ood}.
+Por exemplo, no contexto da síntese física, um algoritmo de Clusterização de Registradores executa operações em todas as posições dos registradores de um circuito.
+Ao armazenar todas as posições destes registradores em um único vetor contíguo, este algoritmo irá incorrer em um número inferior de \textit{cache misses} para recuperar todos os dados.
+Como consequência, o tempo de acesso aos dados é reduzido e o desempenho do \textit{software} é melhorado. Esta organização de dados nem sempre é eficientemente feita pelo modelo de programação~\ac{ood}.
 Neste modelo de programação, os dados são armazenados agrupando-se todas as informações de um mesmo objeto num único registro.
-Observe que com esta abordagem, quando os objetos são recuperados para a \textit{cache}, alguns dados inúteis (atributos do objeto) são carregados juntos.
-Portanto, espaço da memória \textit{cache} é desperdiçado com dados que não serão utilizados pelo algoritmo.
+Observe que com esta abordagem, quando os objetos são recuperados para a \textit{cache}, alguns dados inúteis (atributos do objeto) são carregados junto.
+Portanto, parte do espaço da memória \textit{cache} é desperdiçado com dados que não serão utilizados pelo algoritmo.
 
 % Uma alternativa para o modelo de \ac{ood} é o modelo de programação \ac{dod}. Este modelo tem como enfoque a forma como os dados são organizados na memória.
 % % A Figura~\ref{fig:entityPropertyDOD} mostra um exemplo sobre como modelar os dados usando este modelo de programação.
@@ -51,11 +50,11 @@ Portanto, espaço da memória \textit{cache} é desperdiçado com dados que não
 %     \label{fig:entityPropertyDOD}
 % \end{figure}
 
-Com objetivo de explanar como a organização dos dados pode impactar na utilização da memória \textit{cache}, a Figura~\ref{fig:cache_register_clustering} apresenta um comparativo entre duas organizações de dados para a mesma funcionalidade. 
+Com o objetivo de explanar como a organização dos dados pode impactar na utilização da memória \textit{cache}, a Figura~\ref{fig:cache_register_clustering} apresenta um comparativo entre duas organizações de dados para a mesma funcionalidade. 
 Nesta figura são apresentados trechos de códigos (lado esquerdo) para cada organização e um bloco da \textit{cache} após a execução (lado direito).
-A Figura~\ref{fig:cache_register_clustering}~(a) representa a modelagem dos dados seguindo a abordagem \ac{aos} que é tradicionalmente utilizada na orientação a objetos (OOD).
-A Figura~\ref{fig:cache_register_clustering}~(b) representa a abordagem \ac{soa} que é utilizada no modelo orientado a dados (DOD).
-Para ambos os casos a \textit{cache} apresentada possui blocos com tamanho de $128$ $bytes$, cada número inteiro ocupa $4$ $bytes$ e por motivos de simplicidade as palavras (\textit{string}) ocupam $8$ $bytes$. 
+A Figura~\ref{fig:cache_register_clustering}~(a) representa a modelagem dos dados seguindo a abordagem \ac{aos}, que é utilizada na orientação a objetos (OOD).
+A Figura~\ref{fig:cache_register_clustering}~(b) representa a abordagem \ac{soa}, utilizada no modelo orientado a dados (DOD).
+Admita que, para ambos os casos, a \textit{cache} apresentada possui blocos com tamanho de $128$ $bytes$, cada número inteiro ocupa $4$ $bytes$ e, por motivos de simplicidade, cada palavra (\textit{string}) ocupa $8$ $bytes$. 
 
 
 \begin{figure}[h!t]
@@ -66,18 +65,18 @@ Para ambos os casos a \textit{cache} apresentada possui blocos com tamanho de $1
     \label{fig:cache_register_clustering}
 \end{figure}
 
-Pode-se notar que no modelo \ac{ood}, quando ocorre um \textit{cache miss}, todo o objeto precisa ser recuperado para a \textit{cache}. Ao recuperar todas as informações do objeto, desperdiça-se espaço com atributos/informações que não serão utilizadas na solução do problema. No exemplo da Figura~\ref{fig:cache_register_clustering}~(a) são carregados para a \textit{cache} o nome dos registradores, porém, somente deseja-se alterar as posições dos registradores. Assim, $50\%$ dos dados recuperados por um \textit{cache miss} são desperdiçados.
+Pode-se notar que no modelo \ac{ood}, quando ocorre um \textit{cache miss}, todo o objeto precisa ser recuperado para a \textit{cache}. Ao recuperar todas as informações do objeto, desperdiça-se espaço com atributos/informações que não serão utilizados na solução do problema. No exemplo da Figura~\ref{fig:cache_register_clustering}~(a) são carregados para a \textit{cache} os nomes e as posições dos registradores (Struct Register). Porém, considerando que se desejasse alterar somente as posições dos registradores, $50\%$ dos dados recuperados por um \textit{cache miss} seriam desperdiçados.
 
 
 
-Utilizando-se o modelo \ac{dod}, Figura~\ref{fig:cache_register_clustering}~(b), quando um \textit{cache miss} ocorre somente o vetor das propriedades necessárias é recuperado para a \textit{cache}. Este fato implica em que atributos desnecessários para esta execução não serão recuperados. Assim, a memória \textit{cache} é preenchida somente com dados úteis.
-Seguindo esta abordagem, o número de \textit{cache misses} será menor e consequentemente o tempo de acesso aos dados da memória principal. Estes fatores possivelmente poderão reduzir o tempo total despendido por uma aplicação para executar determinado algoritmo.
+Utilizando-se o modelo \ac{dod}, Figura~\ref{fig:cache_register_clustering}~(b), quando um \textit{cache miss} ocorre, somente o vetor das propriedades necessárias é recuperado para a \textit{cache}. Este fato implica que atributos desnecessários para esta execução não serão recuperados. Assim, a memória \textit{cache} será preenchida somente com dados úteis.
+Seguindo esta abordagem, o número de \textit{cache misses} será menor e consequentemente, o tempo de acesso aos dados da memória principal será reduzido. Estes fatores poderão contribuir para reduzir o tempo total despendido por uma aplicação para executar determinado algoritmo.
 
 
 
 % Para exemplificar a diferença entre os modelos \ac{ood} e \ac{dod} na modelagem dos dados, a Figura~\ref{fig:modelo_register_clustering} apresenta uma possível solução para o problema de clusterização de registradores seguindo estes dois modelos.
 O uso de DOD também impacta em diferenças na modelagem dos dados. Por exemplo, a Figura~\ref{fig:modelo_register_clustering} apresenta uma possível solução para o problema de clusterização de registradores seguindo estes dois modelos.
-Na Figura~\ref{fig:modelo_register_clustering}~(a) é apresentado o diagrama de classes do problema com orientação a objetos. Nesta modelagem são necessárias duas classes: uma para representar os registradores (\textit{Register}) e outra para representas os clusters (\textit{Cluster}). Ambas as classes possuem dois atributos. A classe \textit{Cluster} possui a posição de seu centro e os registradores que pertencem a este cluster. A classe \textit{Register}, por sua vez, possui o nome e a posição do registrador.
+Na Figura~\ref{fig:modelo_register_clustering}~(a) é apresentado o diagrama de classes do problema com orientação a objetos. Nesta modelagem são necessárias duas classes: uma para representar os registradores (\textit{Register}) e outra para representar os clusters (\textit{Cluster}). Ambas as classes possuem dois atributos. A classe \textit{Cluster} possui a posição de seu centro e os registradores que pertencem ao cluster. A classe \textit{Register}, por sua vez, possui o nome e a posição do registrador.
 
 \begin{figure}[h!t]
     \centering
@@ -98,18 +97,18 @@ Estas propriedades serão agora recuperadas a partir do índice de uma entidade.
 Por exemplo, a posição de um registrador $i$ é recuperada acessando o vetor ``\textit{Register Positions}'' na posição $i$.
 
 Embora o modelo \ac{dod} possa reduzir o número de \textit{cache misses}, seu conceito não é trivial de adotar.
-Para usar eficientemente este modelo de programação, é necessário gerenciar os vetores de propriedades para garantir que os mesmos permaneçam contíguos à medida que novos dados são adicionados e/ou removidos. Um padrão de projeto chamado Sistema de Componente e Entidade (\textit{Entity-Component System}) pode ser adotado para lidar com esse problema~\cite{nystrom2014game}. Este padrão de projeto será descrito na seção a seguir.
+Para usar eficientemente este modelo de programação, é necessário gerenciar os vetores de propriedades para garantir que os mesmos permaneçam contíguos à medida que novos dados são adicionados e/ou removidos. Um padrão de projeto chamado Sistema de Componente e Entidade (\textit{Entity-Component System}) pode ser adotado para lidar com esse problema~\cite{nystrom2014game}. Este padrão de projeto é descrito na seção a seguir.
 
 \section{\textit{Entity-Component System}}
 \label{sec:entity_component_system}
 
-Esta seção irá explanar os conceitos que são envolvidos no padrão de projetos \textit{Entity-Component System}.
-Primeiramente serão explicados o que são Entidades e Componentes e como seriam relacionados com o padrão de projeto \ac{ood}.
-Posteriormente, será abordado como gerenciar as entidades para que operações elementares ocorram em tempo computacional constante.
+Esta seção traz os conceitos envolvidos no padrão de projetos \textit{Entity-Component System}.
+Primeiramente, serão explicados o que são Entidades e Componentes e qual a sua relação com o padrão de projeto \ac{ood}.
+A seguir, aborda-se o gerenciamento das entidades para que operações elementares ocorram em tempo computacional constante.
 
 \subsection{Entidades e Componentes}
 
-O padrão de projeto \textit{Entity-Component System} consiste em decompor um problema em um conjunto de entidades e seus componentes~\cite{nystrom2014game}. As entidades são análogas aos objetos no modelo \ac{ood}, enquanto os componentes correspondem às suas propriedades (ou atributos). Neste trabalho, os componentes serão referenciados por propriedades. Díspar aos objetos, as entidades não são estruturas complexas, elas são apenas identificadores únicos (IDs). Cada propriedade, por sua vez, é representada usando uma vetor de dados. O índice (ID) da entidade é utilizado para acessar suas propriedades nesses vetores. Por exemplo, a Figura~\ref{fig:entity_example} ilustra uma entidade com cinco propriedades, onde cada propriedade corresponde a um vetor e o ID da entidade é utilizado para acessar todos os vetores. Da mesma forma que as propriedades, cada uma dessas entidades é armazenada em um vetor contíguo.
+O padrão de projeto \textit{Entity-Component System} consiste em decompor um problema em um conjunto de entidades e seus componentes~\cite{nystrom2014game}. As entidades são análogas aos objetos no modelo \ac{ood}, enquanto os componentes correspondem às suas propriedades (ou atributos). Neste trabalho, os componentes serão referenciados por propriedades. Díspar aos objetos, as entidades não são estruturas complexas, elas são apenas identificadores únicos (IDs). Cada propriedade, por sua vez, é representada usando um vetor de dados. O índice (ID) da entidade é utilizado para acessar suas propriedades nesses vetores. Por exemplo, a Figura~\ref{fig:entity_example} ilustra uma entidade com cinco propriedades, onde cada propriedade corresponde a um vetor e o ID da entidade é utilizado para acessar todos os vetores. Da mesma forma que as propriedades, cada uma dessas entidades é armazenada em um vetor contíguo.
 
 \begin{figure}[ht]
     \centering
@@ -121,13 +120,13 @@ O padrão de projeto \textit{Entity-Component System} consiste em decompor um pr
 
 \subsection{Sistema de Entidades}
 
-O sistema de entidade é necessário para gerenciar o acesso as entidades e suas propriedades. Este sistema também é responsável por criar e destruir entidades, bem como gerenciar os vetores das propriedades ao alterar o número de entidades. Por exemplo, se uma entidade for criada ou destruída, o sistema da entidade deve assegurar de forma eficiente que todos os vetores permanecem contíguos na memória.
+O sistema de entidades é necessário para gerenciar o acesso às entidades e suas propriedades. Este sistema também é responsável por criar e destruir entidades, bem como gerenciar os vetores das propriedades ao alterar o número de entidades. Por exemplo, se uma entidade for criada ou destruída, o sistema da entidade deve assegurar, de forma eficiente, que todos os vetores permanecem contíguos na memória.
 
-Além de gerenciar a criação e destruição de entidades, o sistema de entidade deve fornecer uma interface de acesso as entidades e suas propriedades com complexidade de tempo constante  ($\mathcal{O}(1)$). Para apresentar os algoritmos do sistema da entidade, vamos usar a notação descrita na Tabela~\ref{tab:notations}. Observe que $E_S$ e $\Pi^i_S$ são vetores e, portanto, seus valores podem ser acessados através dos índices correspondentes. Por exemplo, $E_S(i)$ representa a entidade na i-ésima posição do vetor de entidades.
+Além de gerenciar a criação e destruição de entidades, o sistema de entidade deve fornecer uma interface de acesso às entidades e às suas propriedades com complexidade de tempo constante  ($\mathcal{O}(1)$). Para apresentar os algoritmos do sistema da entidade, vamos usar a notação descrita na Tabela~\ref{tab:notations}. Observe que $E_S$ e $\Pi^i_S$ são vetores e, portanto, seus valores podem ser acessados através dos índices correspondentes. Por exemplo, $E_S(i)$ representa a entidade na i-ésima posição do vetor de entidades.
 
 \begin{table}[!ht]
 \centering
-\caption{Notações utilizada no \textit{Entity-Component System} }
+\caption{Notações utilizadas no \textit{Entity-Component System} }
 \label{tab:notations}
 \resizebox{\linewidth}{!}{
 \begin{tabular}{ c l }
@@ -162,7 +161,7 @@ $\Pi^i_S(j)$      & valor armazenado na j-ésima posição de $\Pi^i_S$\\ \botto
 
 
 
-O Algoritmo~\ref{alg:entityCreate} descreve como o sistema da entidade cria novas entidades. Quando uma nova entidade $ e $ é criada (linha 1), o sistema da entidade atribui a $ e $ um identificador $ id_e $ equivalente ao tamanho do vetor de entidades $ E_S $ (linha 2). Então a entidade $ e $ é inserida no final do vetor de entidades $ E_S $, chamando a função $ PUSH\_BACK $ (linha 3). Finalmente, para cada propriedade $\Pi^i_S$ associada ao sistema da entidade $S$, um valor padrão é adicionado para a nova entidade $ e $ (linhas 4-6). Observe que o identificador de $ e $ ($ id_e $) é usado como um índice para acessar os vetores de propriedades.
+O Algoritmo~\ref{alg:entityCreate} descreve como o sistema da entidade cria novas entidades. Quando uma nova entidade $ e $ é criada (linha 1), o sistema da entidade atribui a $ e $ um identificador $ id_e $ equivalente ao tamanho do vetor de entidades $ E_S $ (linha 2). Então, a entidade $ e $ é inserida no final do vetor de entidades $ E_S $, chamando a função $ PUSH\_BACK $ (linha 3). Finalmente, para cada propriedade $\Pi^i_S$ associada ao sistema da entidade $S$, um valor padrão é adicionado para a nova entidade $ e $ (linhas 4-6). Observe que o identificador de $ e $ ($ id_e $) é usado como um índice para acessar os vetores de propriedades.
 
 \begin{algorithm}[ht]
 %  \scriptsize
@@ -185,7 +184,7 @@ O Algoritmo~\ref{alg:entityCreate} descreve como o sistema da entidade cria nova
 
  O Algoritmo~\ref{alg:entityDestroy} apresenta as etapas de remoção de uma entidade. Dada uma entidade $ e $ para ser destruída, o sistema da entidade poderia simplesmente removê-lo do vetor de entidades. No entanto, remover um elemento do meio de um vetor contíguo tem uma complexidade de tempo de $\mathcal{O}(n)$, sendo $ n $ o número de entidades. Outra opção seria atribuir a entidade $ e $ como inválida, em vez de removê-la do vetor. No entanto, essa abordagem deixaria buracos no vetor de entidades, o que poderia degradar o desempenho do sistema da entidade.
 
-  Em vez de remover a entidade $ e $ do vetor ou atribuí-la como inválida, o sistema de entidade substitui a entidade $e$ pela última entidade $e'$ do vetor de entidades (linhas 1-4). Em seguida, o último elemento deste vetor é removido ao chamar a função $ POP\_BACK $ (linha 5). Desta forma, o vetor de entidades permanece contíguo na memória e a operação de remoção é executada em~$\mathcal{O}(1)$. Depois de substituir $ e $ por $ e' $, o sistema de entidade faz o mesmo para os vetores de propriedades, substituindo os valores associados à entidade $ e $ por aqueles associados com a entidade $ e' $ (linhas 6-9). Por fim é retornado o sistema de entidades $S$ sem a entidade $e$.
+  Em vez de remover a entidade $ e $ do vetor ou atribuí-la como inválida, o sistema de entidade substitui a entidade $e$ pela última entidade $e'$ do vetor de entidades (linhas 1-4). Em seguida, o último elemento deste vetor é removido ao chamar a função $ POP\_BACK $ (linha 5). Desta forma, o vetor de entidades permanece contíguo na memória e a operação de remoção é executada em~$\mathcal{O}(1)$. Depois de substituir $ e $ por $ e' $, o sistema de entidade faz o mesmo para os vetores de propriedades, substituindo os valores associados à entidade $ e $ por aqueles associados com a entidade $ e' $ (linhas 6-9). Por fim, é retornado o sistema de entidades $S$ sem a entidade $e$.
 
  \begin{algorithm} [ht]
  %  \scriptsize
@@ -220,7 +219,6 @@ O Algoritmo~\ref{alg:entityCreate} descreve como o sistema da entidade cria nova
 
 
   Em vez de usar relacionamentos hierárquicos (como \ac{ood}), o padrão de projeto \textit{Entity-Component System} representa relações entre as entidades por meio de composição e agregação. Uma composição representa uma relação de posse. Uma agregação, por sua vez, é simplesmente uma associação entre diferentes entidades, sem posse~\cite{gamma1995design}.
-  % Figura \ref {} mostra exemplos de composição e agregações no contexto do design físico.
   Por exemplo, uma célula de circuito é composta por pinos, o que significa que, quando a célula é destruída, todos os seus pinos devem ser destruídos também. Por outro lado, a relação entre uma interconexão e seus pinos é simplesmente uma agregação. Como consequência, se uma interconexão é destruída, a relação também é destruída, mas todos os pinos permanecem no sistema da entidade.
 
   Esses relacionamentos podem ser adicionados à implementação do sistema de entidade (Algoritmos~\ref{alg:entityCreate} e~\ref{alg:entityDestroy}) como propriedades especiais. Desta forma, quando a propriedade é removida do vetor de propriedades (linha $ 8 $ do Algoritmo~\ref{alg:entityDestroy}), ele remove automaticamente o relacionamento. Além disso, se a propriedade é uma composição, serão removidas todas as entidades relacionadas.

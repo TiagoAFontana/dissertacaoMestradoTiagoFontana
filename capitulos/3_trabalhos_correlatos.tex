@@ -2,33 +2,35 @@
 \chapter{Trabalhos correlatos}
 \label{cap:trabalhos_correlatos}
 
-Este capítulo revisa os principais trabalhos de otimização do uso da memória \textit{cache}.
-Inicialmente, na Seção~\ref{sec:trabalhos_cache_aware} serão abordados os trabalhos correlatos que consideram informações da arquitetura da memória \textit{cache} (\textit{cache-aware}).
-Posteriormente, na Seção~\ref{sec:trabalhos_cache_oblivous} serão abordados os trabalhos que desconsideram informações sobre a arquitetura de memória \textit{cache} em que o programa será executado (\textit{cache-oblivious}).
-Por fim, na Seção~\ref{sec:analise_trabalhos_correlatos}, será apresentado um resumo do estado da arte e suas oportunidades de contribuições científicas.
+Este capítulo revisa os principais trabalhos correlatos em otimização do uso da memória \textit{cache}.
+A Seção~\ref{sec:trabalhos_cache_aware} abordada os trabalhos que consideram informações da arquitetura da memória \textit{cache}, referenciados na literatura por \textit{cache-aware}.
+Posteriormente, na Seção~\ref{sec:trabalhos_cache_oblivous}, são abordados os trabalhos que desconsideram informações sobre a arquitetura de memória \textit{cache} em que o programa será executado, denominados de \textit{cache-oblivious}.
+Por fim, na Seção~\ref{sec:analise_trabalhos_correlatos}, são apresentados um resumo do estado da arte e as oportunidades de contribuições científicas.
 É importante ressaltar que este capítulo não faz uma análise exaustiva de cada trabalho citado, mas busca apresentar as características mais relevantes das principais abordagens para otimização do uso da memória \textit{cache}.
 
-\section{Considerando \textit{cache-aware}}
+\section{Trabalhos \textit{cache-aware}}
 \label{sec:trabalhos_cache_aware}
 
-Esta seção apresenta os trabalhos correlatos que consideram o modelo de \textit{cache-aware}.
-Algoritmos \textit{cache-aware} são aqueles que possuem informações sobre a arquitetura da \textit{cache} a priori.
-Com estas informações estes trabalhos buscam otimizar seus comportamentos para extrair o máximo de desempenho de uma dada arquitetura.
-Como por exemplo, uma multiplicação de matrizes pode ser realizada em blocos para melhorar a localidade da \textit{cache}.
+% Esta seção apresenta os trabalhos correlatos que consideram o modelo de \textit{cache-aware}.
+Algoritmos \textit{cache-aware} são aqueles que possuem informações, a priori, sobre a arquitetura da \textit{cache}.
+Com estas informações eles buscam otimizar seus comportamentos para extrair o máximo de desempenho de uma dada arquitetura.
+%Como por exemplo, uma multiplicação de matrizes pode ser realizada em blocos para melhorar a localidade da \textit{cache}.
+
+Para exemplificar isso considere o algoritmo de multiplicação de duas matrizes.   
+A Figura~\ref{fig:multiplicacao_matriz} apresenta como é feita a multiplicação de duas matrizes utilizando a abordagem sem otimizações. Nesta figura, os \textit{cache misses} são representados pelas setas e a linha pontilhada representa um \textit{cache hit}. Podemos notar que os blocos carregados para a \textit{cache} não são reaproveitados no passo seguinte da multiplicação, o que irá gerar um grande aumento no número de instruções executadas, bem como no tempo total de execução.
 
 \begin{figure}[hb]
     \centering
-    \subfigure[$1^a$ iteração]{\includegraphics[width=0.3\linewidth]{img/multiplicacao_matrix_a}}
-    \subfigure[$2^a$ iteração]{\includegraphics[width=0.3\linewidth]{img/multiplicacao_matrix_b}}
-    \subfigure[$3^a$ iteração]{\includegraphics[width=0.3\linewidth]{img/multiplicacao_matrix_c}}
-    \caption[Exemplo de multiplicação de matrizes]{Exemplo de multiplicação de matrizes com abordagem tradicional.}
+    \subfigure[]{\includegraphics[width=0.3\linewidth]{img/multiplicacao_matrix_a}}
+    \subfigure[]{\includegraphics[width=0.3\linewidth]{img/multiplicacao_matrix_b}}
+    \subfigure[]{\includegraphics[width=0.3\linewidth]{img/multiplicacao_matrix_c}}
+    \caption[Exemplo de multiplicação de matrizes]{Exemplo de multiplicação de matrizes sem otimizações.}
     \label{fig:multiplicacao_matriz}
 \end{figure}
 
-A Figura~\ref{fig:multiplicacao_matriz} apresenta como é feita a multiplicação de duas matrizes utilizando a abordagem tradicional. Nesta figura, os \textit{cache misses} são representados pelas setas e a linha pontilhada representa um \textit{cache hit}. Podemos notar que os blocos carregados para a \textit{cache} não são reaproveitados no passo seguinte da multiplicação, o que irá gerar um grande aumento no numero de instruções executadas bem como no tempo toral de execução.
 
 Um algoritmo \textit{cache aware} para a multiplicação de matrizes poderia tirar proveito do conhecimento do tamanho do bloco da \textit{cache} para executar as operações em uma sub-matriz.
-A multiplicação de matrizes em blocos é possível uma vez que tal operação é composta pelo somatório dos produtos dos elementos das matrizes e a ordem como são feitas as adições não é importante.
+A multiplicação de matrizes em blocos é possível porque tal operação é composta pelo somatório dos produtos dos elementos das matrizes e a ordem como são feitas as adições não é relevante.
 O único cuidado que se deve tomar neste caso é para que todos os produtos sejam realizados corretamente e contribuam para as somas adequadas.
 
 
@@ -37,10 +39,10 @@ A Figura~\ref{fig:multiplicacao_matriz_bloco} ilustra a execução de um algorit
 
 \begin{figure}[hb]
     \centering
-    \subfigure[$1^a$ iteração]{\includegraphics[width=0.3\linewidth]{img/multiplicacao_matrix_bloco_a}}
-    \subfigure[$2^a$ iteração]{\includegraphics[width=0.3\linewidth]{img/multiplicacao_matrix_bloco_b}}
-    \subfigure[$3^a$ iteração]{\includegraphics[width=0.3\linewidth]{img/multiplicacao_matrix_bloco_c}}
-    \caption[Exemplo multiplicação de matrizes em blocos]{Exemplo multiplicação de matrizes em blocos.}
+    \subfigure[]{\includegraphics[width=0.3\linewidth]{img/multiplicacao_matrix_bloco_a}}
+    \subfigure[]{\includegraphics[width=0.3\linewidth]{img/multiplicacao_matrix_bloco_b}}
+    \subfigure[]{\includegraphics[width=0.3\linewidth]{img/multiplicacao_matrix_bloco_c}}
+    \caption[Exemplo de multiplicação de matrizes em blocos]{Exemplo multiplicação de matrizes em blocos.}
     \label{fig:multiplicacao_matriz_bloco}
 \end{figure}
 
@@ -64,33 +66,33 @@ A Figura~\ref{fig:multiplicacao_matriz_bloco} ilustra a execução de um algorit
 
 \subsection{\citeonline{majeti2013compiler}}
 
-O trabalho de \citeonline{majeti2013compiler} possui como objetivo principal determinar o melhor leiaute dos dados para um determinado programa. Segundo o autor, o leiaute ideal para um programa computacional depende se o mesmo é executado em um núcleo de CPU, uma GPU dedicada (externa ao processador), ou em uma GPU integrada ao processador. Com isso, para obter programas que extraíssem todo o potencial de uma arquitetura, seria necessário reescrever o código-fonte para cada arquitetura de CPU\@/\@GPU.
+O trabalho de \citeonline{majeti2013compiler} possui como objetivo principal determinar o melhor leiaute dos dados para um determinado programa computacional. Segundo o autor, o leiaute ideal para um programa depende se o mesmo é executado em um núcleo de CPU, em uma GPU dedicada (externa ao processador), ou em uma GPU integrada ao processador. Com isso, para obter programas que extraíssem todo o potencial de uma arquitetura, seria necessário reescrever o código-fonte para cada arquitetura de CPU\@/\@GPU.
 
 Para sanar o problema da reescrita do código para cada arquitetura, \citeonline{majeti2013compiler} propuseram a inserção de metadados nos códigos-fonte. Estes metadados guiariam um compilador a selecionar as melhores estruturas de dados para uma dada arquitetura de CPU\@/\@GPU. Com isso, o compilador é capaz de escolher e converter os dados de \ac{aos} para \ac{soa} e vice-versa.
 % Neste trabalho também é apresentado que a escolha do leiaute dos dados que maximiza o número de acessos coalescidos (acessos que utilizam o mesmo bloco da cache e, portanto, minimizam o número de cache misses) em uma GPU é NP-completo~\cite{wu2013complexity}.
-Majeti et al. ainda ressaltam que os metadados se fazem necessários pois a escolha de um leiaute de dados que maximiza o número de acessos coalescidos (acessos que utilizam o mesmo bloco da \textit{cache} e, portanto, minimizam o número de \textit{cache misses}) para uma GPU é NP-completo. A prova que esta escolha é da classe NP-completo foi realizada por~\citeonline{wu2013complexity}.
+Majeti et al. ainda ressaltam que os metadados se fazem necessários pois a escolha de um leiaute de dados que maximize o número de acessos coalescidos (acessos que utilizam o mesmo bloco da \textit{cache} e, portanto, minimizam o número de \textit{cache misses}) para uma GPU é NP-completo. A prova de que esta escolha é da classe NP-completo foi realizada por~\citeonline{wu2013complexity}.
 
 
-Para avaliar a eficiência da técnica de compilação proposta, os autores geraram \textit{benchmarks} sintéticos e avaliaram a execução compilando esses códigos com e sem os metadados. Em algumas arquiteturas como AMD 4-core A10-5880K CPU e NVIDIA Tesla M2050 GPU conseguiram um \textit{speedup}\footnote{A métrica \textit{speedup} representa a relação entre os tempos de execução da solução sequencial e a solução paralela para um determinado número de threads.} de até $27,11 \times$ e $29,50 \times$ respectivamente.
+Para avaliar a eficiência da técnica de compilação proposta, os autores geraram \textit{benchmarks} sintéticos e avaliaram a execução compilando esses códigos com e sem os metadados. Em algumas arquiteturas como AMD 4-core A10-5880K CPU e NVIDIA Tesla M2050 GPU foram obtidos \textit{speedups}\footnote{A métrica \textit{speedup} corresponde à relação entre o tempo de execução da solução sequencial e o tempo da solução paralela, para um determinado número de threads.} de até $27,11 \times$ e $29,50 \times$, respectivamente.
 
-\section{Considerando \textit{cache-oblivious}}
+\section{Trabalhos \textit{cache-oblivious}}
 \label{sec:trabalhos_cache_oblivous}
 
-Esta seção apresenta os trabalhos correlatos que consideram o modelo de \textit{cache-oblivious}.
-Algoritmos \textit{cache-oblivious} (ou \textit{cache-tran\-scen\-dent}) são algoritmos projetados para explorar a memória \textit{cache} de uma CPU sem ter o tamanho da mesma (ou o tamanho das linhas, etc.) como um parâmetro explícito~\cite{frigo1999cache}. Assim, um algoritmo \textit{cache-oblivious} é concebido para funcionar otimizadamente, sem modificação, em inúmeras arquiteturas com diferentes tamanhos de \textit{cache}, ou para uma hierarquia de memória com diferentes níveis de \textit{cache} e tamanhos variados.
+% Esta seção apresenta os trabalhos correlatos que consideram o modelo de \textit{cache-oblivious}.
+Algoritmos \textit{cache-oblivious} (também chamdos de \textit{cache-tran\-scen\-dent}) são projetados para explorar a memória \textit{cache} de uma CPU sem ter o tamanho da mesma (ou o tamanho das linhas, etc.) como um parâmetro explícito~\cite{frigo1999cache}. Assim, um algoritmo \textit{cache-oblivious} é concebido para funcionar otimizadamente, sem modificação, em inúmeras arquiteturas com diferentes tamanhos de \textit{cache}, ou para uma hierarquia de memória com diferentes níveis de \textit{cache} e tamanhos variados.
 
 \subsection{\citeonline{li2014}}
 
-O trabalho de \citeonline{li2014} tem como enfoque o gerenciamento da \textit{cache} compartilhada em processadores multi-core.
-Segundo os autores, a gestão do compartilhamento de \textit{cache} não é apenas para alcançar um bom desempenho, mas também para garantir um desempenho estável em um ambiente dinâmico. Considerando não apenas programas paralelos, mas também programas sequenciais co-executados uns com os outros.
+O trabalho de \citeonline{li2014} tem como enfoque o gerenciamento da \textit{cache} compartilhada em processadores \textit{multi-core}.
+Segundo os autores, a gestão do compartilhamento de \textit{cache} não é apenas para alcançar um bom desempenho, mas também para garantir um desempenho estável em um ambiente dinâmico, considerando não apenas programas paralelos, mas também programas sequenciais executando simultaneamente em núcleos distintos de uma arquitetura de cache compartilhada.
 
 Para identificar onde o gerenciamento da \textit{cache} pode incidir, os autores descrevem um método para reorganizar o código para um leiaute ideal com base no \ac{pdg}.
 Com estas informações, é construído um \ac{trg}~\cite{gloy1999procedure} para otimizar o leiaute do código em tempo de compilação.
 A otimização realiza duas transformações: reordenamento global das funções e\@/\@ou reordenamento dos blocos inter-procedurais. Estes reordenamentos são baseados na afinidade do acesso à \textit{cache}.
 
-Para mensurar suas otimizações, os autores utilizaram os \textit{benchmarks} SPEC CPU 2006~\cite{spec2006}, realizando os experimentos tanto em uma máquina real como em um simulador de instruções da \textit{cache}. Para medir a proporção de \textit{cache misses}, utilizaram contadores de desempenho de hardware.
+Para mensurar suas otimizações, os autores utilizaram os \textit{benchmarks} SPEC CPU 2006~\cite{spec2006}, realizando os experimentos tanto em uma máquina real como em um simulador de instruções da \textit{cache}. Para medir a proporção de \textit{cache misses}, utilizaram contadores de desempenho de \textit{hardware}.
 O método melhorou o desempenho de todos os programas em até $3\%$ quando estes foram executados separadamente (somente um programa por processador).
-Quando executados mais de um programa por processador, este método obteve até $10,3\%$ de melhoria. Ao utilizar melhor a \textit{cache} compartilhada, o método amplia a melhoria da transferência de \textit{hiper-threading} em $8\%$.
+Quando executados mais de um programa por processador, este método obteve até $10,3\%$ de melhoria. Ao melhor utilizar a \textit{cache} compartilhada, o método amplia a melhoria da transferência de \textit{hiper-threading} em $8\%$.
 
 \subsection{\citeonline{Tang2015}}
 
@@ -108,7 +110,7 @@ Com a paralelização e remoção das dependências artificiais, este trabalho a
 
 Segundo os autores, este é o primeiro trabalho a considerar a organização dos dados juntamente com o leiaute da memória.
 \citeonline{qasem2017characterizing} caracterizam os problemas de desempenho com a organização de dados em arquiteturas de memória heterogêneas, visando descobrir os cenários aos quais seria rentável reorganizar as estruturas de dados compartilhadas para melhorar o desempenho.
-Segundo o autor, a eficiência do acesso aos dados é impactada pelos padrões de acesso à memória, leiaute da estrutura de dados e características do caminho sobre o qual os dados serão transferidos entre o processador e a unidade de memória.
+Segundo os autores, a eficiência do acesso aos dados é impactada pelos padrões de acesso à memória, leiaute da estrutura de dados e características do caminho sobre o qual os dados serão transferidos entre o processador e a unidade de memória.
 
 Com base no estudo realizado sobre os efeitos das organização de dados tradicionais para sistemas de memória heterogêneos, como \ac{aos} e \ac{soa}, os autores propõem uma nova estrutura de dados denominada \ac{ca}.
 Esta estrutura de dados se comporta tanto como \ac{aos} ou \ac{soa}, dependendo do tipo de acesso a dados que está sendo realizado.
@@ -120,7 +122,7 @@ A nova estratégia de organização dos dados (\ac{ca}), que aborda as limitaç�
 \section{Análise qualitativa dos trabalhos correlatos}
 \label{sec:analise_trabalhos_correlatos}
 
-Esta seção apresenta uma análise dos trabalhos correlatos citados neste capítulo.
+Esta seção apresenta uma comparação qualitativa dos trabalhos correlatos citados neste capítulo.
 A Tabela~\ref{tab:resumo_trabalhos_correlatos} classifica os trabalhos correlatos de acordo com o modelo de memória \textit{cache} utilizado (\textit{Cache-Aware} ou \textit{Cache-Oblivious}) e o momento em que a otimização ocorre.
 Ela também identifica os casos de usos que foram utilizados em cada um dos trabalhos.
 
@@ -141,8 +143,8 @@ Majeti, 2013  & Cache-Aware           & Compilação            & sintéticos   
 Li, 2014      & Cache-Oblivious       & Compilação            & SPEC2006 CPU                                                               \\
 Tang, 2015    & Cache-Oblivious       & Pós-Compilação        & sintéticos                                                                 \\
 Qasem, 2017   & Cache-Oblivious       & Pós-Compilação        & sintéticos                                                                 \\
-Este Trabalho & Cache-Oblivious       & Pré-Compilação        & \begin{tabular}[c]{@{}c@{}}algoritmos de\\ Síntese Física*\end{tabular} \\ \midrule
-\multicolumn{4}{l}{* Entrada realista oriunda de circuitos industriais providos pela competição ICCAD2015 \cite{kim2015}.}                
+Este Trabalho & Cache-Oblivious       & Pré-Compilação        & \begin{tabular}[c]{@{}c@{}}algoritmos de\\ síntese física*\end{tabular} \\ \midrule
+\multicolumn{4}{l}{* Casos de uso realistas que consideram dados oriundos de circuitos industriais providos pela competição ICCAD2015 \cite{kim2015}.}                
 \end{tabular}
 }
 \end{table}
@@ -151,10 +153,11 @@ Diversos métodos de otimizações já foram avaliados, dentre os quais se desta
 heurísticas para selecionar estrutura de dados realizado por \citeonline{majeti2013compiler};
 \citeonline{li2014} reorganizaram as instruções baseando-se em grafo de dependências;
 \citeonline{sung2010data} realizaram a conversão das estruturas de dados para aumentar a utilização da \textit{cache} compartilhada empregando transformações em tempo de compilação.
-Porém, a grande maioria destes trabalhos avaliam seus resultados com \textit{benchmarks} sintéticos e nenhum destes consideram o contexto de \textit{Physical Design}.
+Porém, a grande maioria destes trabalhos avalia seus resultados com \textit{benchmarks} sintéticos.
 
-Não foram localizados trabalhos que considerassem otimizações de software para \textit{cache-oblivious} no contexto de \textit{Physical Design}.
-Portanto este trabalho possui como principal diferencial a aplicação de técnicas de otimizações no contexto de \textit{Physical Design}.
-Estas otimizações serão implementadas numa biblioteca \textit{open source} para ensino e pesquisa de síntese física chamada Ophidian~\cite{ophidian}.
-Este trabalho aborda o modelo de \textit{Cache-Oblivious} por ser uma biblioteca \textit{open source}                                                                                                                                                                e as otimizações carecem suportar diversas arquiteturas.
-Para avaliar os 3 algoritmos de \textit{Physical Design} considerando um cenário realista, este trabalho irá utilizar circuitos industriais providos para a análise do problema C da competição ICCAD 2015 CAD Contest~\cite{kim2015}.
+Particularmente, não foram localizados trabalhos que considerassem otimizações de \textit{software} \textit{cache-oblivious} de algoritmos para a síntese física.
+Portanto este trabalho possui como principal diferencial a aplicação de técnicas de otimizações no contexto da síntese física.
+Estas otimizações foram implementadas com uma biblioteca \textit{open source} para ensino e pesquisa de síntese física chamada Ophidian~\cite{ophidian}.
+Como desejava-se incorporar na biblioteca \textit{Ophidian} os artefatos implementados no contexto do presente trabalho, optou-se pelo modelo \textit{Cache-Oblivious}
+uma vez que neste as otimizações são independentes das arquiteturas, ficando-se assim fiel à filosofia \textit{open source}. 
+Para avaliar os algoritmos de síntese física considerando um cenário realista, este trabalho utilizou circuitos industriais providos para a análise do problema C da competição ICCAD 2015 CAD Contest~\cite{kim2015}.
